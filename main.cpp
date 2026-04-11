@@ -1,12 +1,12 @@
 
 #include "graphics.h"
 using namespace std;
-
+#include "interface.h"
 
 int main()
 {
 opengraphsize(200,200);
-    firstPositionDepart(50,50,100,100);
-    secondPositionDepart(100,100,150,150);
+    button(10,10,100,75,0,1,"JOUER");
+    button(10,90,100,155,0,1,"FERMER");
 getch();
 }

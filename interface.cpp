@@ -1,15 +1,21 @@
 #include "interface.h"
 using namespace std;
 
-void button(int x1 , int y1 , int x2 , int y2 ,int font ,int fontSize , int boxColor,int textColor,const char * text)
+
+void button(int x1 , int y1 , int x2 , int y2 ,int font ,int fontSize ,const char * text)
 {
     int midx = x1 + (x2-x1)/2;
     int midy = y1 + (y2-y1)/2;
-    setfillstyle(SOLID_FILL,boxColor);
-    setcolor(boxColor);
+    setcolor(BUTTON_COLOR_SECOND);
+    setfillstyle(SOLID_FILL,BUTTON_COLOR_SECOND);
+    bar(x1-5,y1-5,x2+5,y2+5);
+    setfillstyle(SOLID_FILL,BUTTON_COLOR_MAIN);
+    setcolor(BUTTON_COLOR_MAIN);
     bar(x1,y1,x2,y2);
-    setbkcolor( boxColor );
-    setcolor(textColor);
+
+    setbkcolor( BUTTON_COLOR_MAIN );
+    setcolor(BUTTON_COLOR_TEXT);
+
     settextjustify(CENTER_TEXT, CENTER_TEXT);
     settextstyle(font,0,fontSize);
     outtextxy(midx,midy,text);
