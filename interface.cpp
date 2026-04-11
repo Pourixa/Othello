@@ -1,4 +1,5 @@
 #include "interface.h"
+
 using namespace std;
 
 
@@ -8,7 +9,7 @@ void button(int x1 , int y1 , int x2 , int y2 ,int font ,int fontSize ,const cha
     int midy = y1 + (y2-y1)/2;
     setcolor(BUTTON_COLOR_SECOND);
     setfillstyle(SOLID_FILL,BUTTON_COLOR_SECOND);
-    bar(x1-5,y1-5,x2+5,y2+5);
+    bar(x1-OFFSET,y1-OFFSET,x2+OFFSET,y2+OFFSET);
     setfillstyle(SOLID_FILL,BUTTON_COLOR_MAIN);
     setcolor(BUTTON_COLOR_MAIN);
     bar(x1,y1,x2,y2);
@@ -27,7 +28,7 @@ void firstPositionBoard(int x1 ,int y1 , int x2 , int y2 ,int boardSize)
     int dx = (x2-x1)/boardSize;
     int rad = dx/2 - boardSize/4;
     setfillstyle(SOLID_FILL,BOARD_COLOR_SECOND);
-    bar(x1-5,y1-5,x2+5,y2+5);
+    bar(x1-OFFSET,y1-OFFSET,x2+OFFSET,y2+OFFSET);
     setfillstyle(SOLID_FILL,BOARD_COLOR_MAIN);
     bar(x1,y1,x2,y2);
 
@@ -67,7 +68,7 @@ void secondPositionBoard(int x1 ,int y1 , int x2 , int y2 ,int boardSize)
     int dx = (x2-x1)/boardSize;
     int rad = dx/2 - boardSize/4;
     setfillstyle(SOLID_FILL,BOARD_COLOR_SECOND);
-    bar(x1-5,y1-5,x2+5,y2+5);
+    bar(x1-OFFSET,y1-OFFSET,x2+OFFSET,y2+OFFSET);
     setfillstyle(SOLID_FILL,BOARD_COLOR_MAIN);
     bar(x1,y1,x2,y2);
 
@@ -101,4 +102,15 @@ void secondPositionBoard(int x1 ,int y1 , int x2 , int y2 ,int boardSize)
 
     fillellipse(cX1,cY1 ,rad,rad);
     fillellipse(cX2 ,cY1 ,rad,rad);
+}
+
+void box(int x1 , int y1 , int x2 , int y2 )
+{
+    setcolor(BOX_COLOR_SECOND);
+    setfillstyle(SOLID_FILL,BOX_COLOR_SECOND);
+    bar(x1-OFFSET,y1-OFFSET,x2+OFFSET,y2+OFFSET);
+
+    setcolor(BOX_COLOR_MAIN);
+    setfillstyle(SOLID_FILL,BOX_COLOR_MAIN);
+    bar(x1,y1,x2,y2);
 }

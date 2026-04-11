@@ -1,7 +1,9 @@
 
 #include "graphics.h"
-using namespace std;
 #include "interface.h"
+
+using namespace std;
+
 
 
 int main()
