@@ -10,6 +10,11 @@ const int SELECTABLE_ZONE_SIZE = 10;
 const int BOARD_T1 = 8;
 const int BOARD_T2 = 8 ;
 
+const int CELL_SIZE = 64;
+const int FLIP_CELL_SIZE = 64;
+const int LEGALMOVE_SIZE = 34;
+
+
 struct box
 {
     int x1, y1 , x2 , y2;
@@ -66,5 +71,48 @@ texts ts;
 zones zs;
 selectableZones szs;
 };
+struct cell
+{
+    int row , col;
+    int color; // -1 : empty , 0 : black , 1 : white
+};
 
-using board = array<array<int , 8>,8>;
+struct flipCell {
+    int row, col;
+};
+
+using boardArray = array<array<cell , BOARD_T2>,BOARD_T1>;
+using cellArray = array<cell,CELL_SIZE>;
+using flipArray = array<flipCell,FLIP_CELL_SIZE>;
+
+struct emptyCells{
+    cellArray empty;
+    int n;
+};
+
+
+struct legalMove
+{
+    int row , col;
+    int flipCount;
+    flipCell toFlip;
+};
+
+using legalArray = array<legalMove,CELL_SIZE>;
+
+struct legalMoves
+{
+    legalArray legals;
+    int n;
+};
+
+struct gameState {
+    boardArray b;
+    int n; //board size
+    emptyCells empty;
+    legalMoves legal;
+    int whiteScore;
+    int blackScore;
+    int currentPlayer;
+    bool gameOver;
+};
