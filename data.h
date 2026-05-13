@@ -1,12 +1,13 @@
 #include <array>
 using namespace  std;
 
-const int BUTTON_SIZE = 10;
+const int CLICKABLE_BUTTON_SIZE = 10;
 const int SELECTABLE_BUTTON_SIZE = 10;
 const int TEXT_SIZE = 10;
-const int ZONE_SIZE = 10;
+const int CLICKABLE_ZONE_SIZE = 10;
 const int SELECTABLE_ZONE_SIZE = 10;
-
+const int NAVIG_BUTTON_SIZE = 2;
+const int NAVIG_ZONE_SIZE = 2;
 const int BOARD_T1 = 8;
 const int BOARD_T2 = 8 ;
 
@@ -22,58 +23,82 @@ struct box
 
 struct text
 {
-    double x, y;
+    int x, y;
     char* t;
     int font;
     int fontSize;
 };
 
-using texts = array<text,TEXT_SIZE>;
+struct textButton
+{
+    char* t ;
+    int font ;
+    int fontSize;
+};
 
-struct button
+using textList = array<text,TEXT_SIZE>;
+
+struct clickableButton
 {
     int x1,x2,x3 ,x4;
-    text t;
+    textButton t;
+    int id;
 };
 
-using buttons = array<button,BUTTON_SIZE>;
+using clickableButtonList = array<clickableButton,CLICKABLE_BUTTON_SIZE>;
 
-struct selectableButton {
-    button b;
-    bool selected ;
-};
-
-using selectableButtons = array<selectableButton,SELECTABLE_BUTTON_SIZE>;
-
-struct zone
+struct clickableZone
 {
     int x1,y1 , x2 ,y2;
     int n;
-    buttons bs;
+    clickableButtonList bl;
+};
+using clickableZoneList = array<clickableZone , CLICKABLE_ZONE_SIZE>;
+
+struct selectableButton {
+    clickableButton b;
+    bool selected ;
 };
 
-using zones = array<zone , ZONE_SIZE>;
+using selectableButtonList = array<selectableButton,SELECTABLE_BUTTON_SIZE>;
 
 struct selectableZone
 {
     int x1,y1,x2,y2;
     int n;
-    selectableButtons bs;
+    selectableButtonList bl;
 };
 
-using selectableZones = array<selectableZone , SELECTABLE_ZONE_SIZE>;
+using selectableZoneList = array<selectableZone , SELECTABLE_ZONE_SIZE>;
+
+struct navigButton {
+    clickableButton b;
+    int toPage;
+};
+
+using navigButtonList = array<navigButton, NAVIG_BUTTON_SIZE>;
+
+struct navigZone
+{
+ int x1,y1,x2,y2;
+ int n;
+ navigButtonList bs;
+};
+
+using navigZoneList = array<navigZone,NAVIG_ZONE_SIZE>;
 
 struct page
 {
 box bgBox;
-int nbTexts , nbZones , nbSelectableZones;
-texts ts;
-zones zs;
-selectableZones szs;
+int nbTexts , nbClickableZones  , nbSelectableZones , nbNavigZones;
+textList tl;
+clickableZoneList cl;
+navigZoneList nl;
+selectableZoneList sl;
 };
+
 struct cell
 {
-    int row , col;
     int color; // -1 : empty , 0 : black , 1 : white
 };
 
@@ -81,12 +106,19 @@ struct flipCell {
     int row, col;
 };
 
+struct emptyCell
+{
+    int row , col;
+};
+
+
 using boardArray = array<array<cell , BOARD_T2>,BOARD_T1>;
-using cellArray = array<cell,CELL_SIZE>;
+using emptyCellArray = array<emptyCell,CELL_SIZE>;
 using flipArray = array<flipCell,FLIP_CELL_SIZE>;
 
+
 struct emptyCells{
-    cellArray empty;
+    emptyCellArray ec;
     int n;
 };
 
@@ -98,7 +130,7 @@ struct legalMove
     flipCell toFlip;
 };
 
-using legalArray = array<legalMove,CELL_SIZE>;
+using legalArray = array<legalMove,LEGALMOVE_SIZE>;
 
 struct legalMoves
 {
