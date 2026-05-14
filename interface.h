@@ -1,5 +1,5 @@
 #include "graphics.h"
-
+#include "data.h"
 using namespace std;
 
 const int OFFSET = 5;
@@ -18,6 +18,5 @@ const int BOX_COLOR_SECOND = DARKGRAY;
 void firstPositionBoard(int x1 ,int y1 , int x2 , int y2 ,int boardSize);
 void secondPositionBoard(int x1 ,int y1 , int x2 , int y2 ,int boardSize);
 void button(int x1 , int y1 , int x2 , int y2 ,int font ,int fontSize ,const char * text);
-
 
 void box(int x1 , int y1 , int x2 , int y2 );

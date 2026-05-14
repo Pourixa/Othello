@@ -10,6 +10,7 @@ const int NAVIG_BUTTON_SIZE = 2;
 const int NAVIG_ZONE_SIZE = 2;
 const int BOARD_T1 = 8;
 const int BOARD_T2 = 8 ;
+const int PAGE_SIZE = 10;
 
 const int CELL_SIZE = 64;
 const int FLIP_CELL_SIZE = 64;
@@ -96,12 +97,14 @@ clickableZoneList cl;
 navigZoneList nl;
 selectableZoneList sl;
 };
+using pageList = array<page,PAGE_SIZE>;
 
-struct cell
-{
-    int color; // -1 : empty , 0 : black , 1 : white
+struct UI{
+    int pageID;
+    pageList pl;
 };
 
+///////////////game
 struct flipCell {
     int row, col;
 };
@@ -112,7 +115,7 @@ struct emptyCell
 };
 
 
-using boardArray = array<array<cell , BOARD_T2>,BOARD_T1>;
+using boardArray = array<array<int , BOARD_T2>,BOARD_T1>;
 using emptyCellArray = array<emptyCell,CELL_SIZE>;
 using flipArray = array<flipCell,FLIP_CELL_SIZE>;
 
@@ -127,7 +130,7 @@ struct legalMove
 {
     int row , col;
     int flipCount;
-    flipCell toFlip;
+    flipArray toFlip;
 };
 
 using legalArray = array<legalMove,LEGALMOVE_SIZE>;
@@ -141,10 +144,10 @@ struct legalMoves
 struct gameState {
     boardArray b;
     int n; //board size
-    emptyCells empty;
+    emptyCells ec;
     legalMoves legal;
     int whiteScore;
     int blackScore;
-    int currentPlayer;
+    bool currentPlayer; // false : black , true: white
     bool gameOver;
 };
