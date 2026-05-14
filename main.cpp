@@ -1,8 +1,13 @@
 
+#include "graphics.h"
+#include "interface.h"
+
 using namespace std;
-// salut c'est Noé
+
+
 
 int main()
 {
-
+opengraphsize(1580,920);
+getch();
 }
