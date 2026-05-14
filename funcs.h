@@ -1,5 +1,6 @@
 #include <iostream>
 #include "data.h"
+#include "cmath"
 using namespace std;
 
 //gamePart
@@ -58,8 +59,8 @@ for(int i = 0 ;i<gs.n ; i++)
         removeEmptyCell(gs.ec,4,3);
         removeEmptyCell(gs.ec,4,4);
     }
-    gs.blackScore = 2;
-    gs.whiteScore = 2;
+    gs.nbP[false] = 2;
+    gs.nbP[true] = 2;
     gs.currentPlayer = false;
     gs.gameOver = false;
 }
@@ -126,4 +127,79 @@ void calculateLegalMoves(gameState& gs)
         }
         lm.flipCount = 0;
     }
+}
+
+bool verifyClick(const gameState& gs , int boardX1 ,int boardY1 , int boardX2 ,int boardY2 ,int xMouse , int yMouse , int& row ,int& col)
+{
+    if((xMouse>boardX1 && xMouse < boardX2) && (yMouse >boardY1 && yMouse<boardY2))
+    {
+        int dx = (boardX2 - boardX1) / gs.n;
+        int dy = (boardY2 - boardY1) / gs.n;
+
+
+        int xLoc = xMouse - dx;
+        int xCount = 0;
+        while(xLoc > 0)
+        {
+            xLoc -=dx;
+            xCount++;
+        }
+
+        int yLoc = yMouse - dy;
+        int yCount = 0;
+        while(yLoc > 0)
+        {
+            yLoc -=dy;
+            yCount++;
+        }
+
+        row = yCount;
+        col = xCount;
+        return true;
+    }
+    return false;
+}
+
+bool isClickLegal(const gameState& gs,int row , int col , int& id)
+{
+    int i = 0;
+    bool flag = false;
+    while(!flag && i<gs.legal.n)
+    {
+        if(gs.legal.legals[i].row == row && gs.legal.legals[i].col == col)
+        {
+            id = i;
+            flag = true;
+        }
+        i++;
+    }
+    return flag;
+}
+
+void playLegal(gameState& gs,int id)
+{
+    legalMove lm  = gs.legal.legals[id];
+    gs.b[lm.row][lm.col] = gs.currentPlayer;
+    removeEmptyCell(gs.ec,lm.row,lm.col);
+    for(int i = 0 ; i<lm.flipCount ; i++)
+    {
+        gs.b[lm.toFlip[i].row][lm.toFlip[i].col] = gs.currentPlayer;
+    }
+    gs.nbP[gs.currentPlayer] += lm.flipCount;
+}
+
+bool playMove(gameState& gs  , int boardX1 ,int boardY1 , int boardX2 ,int boardY2 ,int xMouse , int yMouse )
+{
+    int row,col;
+    int id;
+    if(verifyClick(gs,boardX1,boardY1,boardX2,boardY2,xMouse,yMouse,row,col))
+    {
+        if(isClickLegal(gs,row,col,id))
+        {
+            playLegal(gs,id);
+            return true;
+        }
+        return false;
+    }
+    return false;
 }

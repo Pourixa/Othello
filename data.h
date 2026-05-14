@@ -1,4 +1,5 @@
 #include <array>
+
 using namespace  std;
 
 const int CLICKABLE_BUTTON_SIZE = 10;
@@ -141,13 +142,14 @@ struct legalMoves
     int n;
 };
 
+using numberOfPions =array<int , 2>;
+
 struct gameState {
     boardArray b;
     int n; //board size
     emptyCells ec;
     legalMoves legal;
-    int whiteScore;
-    int blackScore;
+    numberOfPions nbP; // 0 : black , 1 : white
     bool currentPlayer; // false : black , true: white
     bool gameOver;
 };
