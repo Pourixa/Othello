@@ -106,6 +106,11 @@ struct UI{
 };
 
 ///////////////game
+struct cell
+{
+    int id ;
+    int color;
+};
 struct flipCell {
     int row, col;
 };
@@ -116,7 +121,7 @@ struct emptyCell
 };
 
 
-using boardArray = array<array<int , BOARD_T2>,BOARD_T1>;
+using boardArray = array<array<cell , BOARD_T2>,BOARD_T1>;
 using emptyCellArray = array<emptyCell,CELL_SIZE>;
 using flipArray = array<flipCell,FLIP_CELL_SIZE>;
 

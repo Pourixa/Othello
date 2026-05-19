@@ -15,6 +15,8 @@ const int BOARD_COLOR_LINES = BLACK;
 const int BOX_COLOR_MAIN = LIGHTGREEN;
 const int BOX_COLOR_SECOND = DARKGRAY;
 
+
+
 void firstPositionBoard(int x1 ,int y1 , int x2 , int y2 ,int boardSize);
 void secondPositionBoard(int x1 ,int y1 , int x2 , int y2 ,int boardSize);
 void button(int x1 , int y1 , int x2 , int y2 ,int font ,int fontSize ,const char * text);
