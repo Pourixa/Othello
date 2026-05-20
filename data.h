@@ -1,5 +1,4 @@
 #include <array>
-
 using namespace  std;
 
 const int CLICKABLE_BUTTON_SIZE = 10;
@@ -16,7 +15,6 @@ const int PAGE_SIZE = 10;
 const int CELL_SIZE = 64;
 const int FLIP_CELL_SIZE = 64;
 const int LEGALMOVE_SIZE = 34;
-
 
 struct box
 {

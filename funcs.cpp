@@ -3,7 +3,7 @@ using namespace std;
 
 bool addEmptyCell(gameState& gs , int row , int col)
 {
-    if(checkCell(gs,row,col,-1)) {
+    if(checkCell(gs,row,col,-1) && gs.b[row][col].id == -1) {
         emptyCell c;
         c.row = row;
         c.col = col;
@@ -19,6 +19,7 @@ bool addEmptyCell(gameState& gs , int row , int col)
 bool removeEmptyCell(gameState& gs,int row , int col)
 {
     int i = gs.b[row][col].id;
+    gs.b[row][col].id = -1;
     if(i != -1) {
         gs.ec.n--;
         gs.ec.ec[i] = gs.ec.ec[gs.ec.n];
@@ -26,6 +27,7 @@ bool removeEmptyCell(gameState& gs,int row , int col)
         gs.b[cRow][cCol].id = i;
         return true;
     }
+    return false;
 }
 
 //0 for standard position , 1 for 2 up 2 down pos
@@ -40,21 +42,22 @@ void initGame(gameState& gs , int n ,int choice)
             gs.b[i][j].id = -1;
         }
     }
-
+    int r1 = n/2 , r2 = r1-1;
+    int c1 = n/2 , c2 = c1-1;
     if(choice == 0)
     {
-        gs.b[3][3].color = 1;
-        gs.b[3][4].color = 0;
-        gs.b[4][3].color = 0;
-        gs.b[4][4].color = 1;
+        gs.b[r1][c1].color = 1;
+        gs.b[r1][c2].color = 0;
+        gs.b[r2][c1].color = 0;
+        gs.b[r2][c2].color = 1;
 
     }
     else
     {
-        gs.b[3][3].color = 0;
-        gs.b[3][4].color = 0;
-        gs.b[4][3].color = 1;
-        gs.b[4][4].color = 1;
+        gs.b[r1][c1].color = 0;
+        gs.b[r1][c2].color = 0;
+        gs.b[r2][c1].color = 1;
+        gs.b[r2][c2].color = 1;
     }
 
     for(int i = 2 ; i<=5 ; i++)
@@ -83,7 +86,7 @@ bool isEmptyCellLegalOneDirection(const gameState& gs ,legalMove& lm , const emp
 {
     lm.row = cell.row;
     lm.col = cell.col;
-    int newRow = cell.row + rowDirection , newCol = cell.col + colDirection;
+    int newRow = cell.row + rowDirection , newCol = cell.col + colDirection , i = 0;
     int flipCountCopy = lm.flipCount;
     flipArray toFlipCopy = lm.toFlip;
     while((newRow>=0 && newRow<gs.n) && (newCol>=0 && newCol <gs.n) && checkCell(gs,newRow,newCol,!gs.currentPlayer))
@@ -95,8 +98,9 @@ bool isEmptyCellLegalOneDirection(const gameState& gs ,legalMove& lm , const emp
         lm.flipCount++;
         newRow+=rowDirection;
         newCol+=colDirection;
+        i++;
     }
-    if(checkCell(gs,newRow,newCol,gs.currentPlayer))
+    if(checkCell(gs,newRow,newCol,gs.currentPlayer) && i > 0)
         return true;
     lm.flipCount = flipCountCopy;
     lm.toFlip =  toFlipCopy;
@@ -106,16 +110,15 @@ bool isEmptyCellLegalOneDirection(const gameState& gs ,legalMove& lm , const emp
 bool isEmptyCellLegal(const gameState& gs ,legalMove& lm , const emptyCell& cell)
 {
     lm.flipCount = 0;
-    return (
-            isEmptyCellLegalOneDirection(gs,lm,cell,-1,0) ||
-            isEmptyCellLegalOneDirection(gs,lm,cell,-1,1) ||
-            isEmptyCellLegalOneDirection(gs,lm,cell,0,1) ||
-            isEmptyCellLegalOneDirection(gs,lm,cell,1,1) ||
-            isEmptyCellLegalOneDirection(gs,lm,cell,1,0) ||
-            isEmptyCellLegalOneDirection(gs,lm,cell,1,-1) ||
-            isEmptyCellLegalOneDirection(gs,lm,cell,0,-1) ||
-            isEmptyCellLegalOneDirection(gs,lm,cell,-1,-1)
-    );
+    bool flag =  isEmptyCellLegalOneDirection(gs,lm,cell,-1,0) ;
+    flag = isEmptyCellLegalOneDirection(gs,lm,cell,-1,1) || flag;
+    flag = isEmptyCellLegalOneDirection(gs,lm,cell,0,1) || flag;
+    flag = isEmptyCellLegalOneDirection(gs,lm,cell,1,1) || flag;
+    flag = isEmptyCellLegalOneDirection(gs,lm,cell,1,0) || flag;
+    flag = isEmptyCellLegalOneDirection(gs,lm,cell,1,-1) || flag;
+    flag = isEmptyCellLegalOneDirection(gs,lm,cell,0,-1) || flag;
+    flag = isEmptyCellLegalOneDirection(gs,lm,cell,-1,-1) || flag;
+    return flag;
 }
 
 
@@ -123,7 +126,6 @@ void calculateLegalMoves(gameState& gs)
 {
     legalMove lm;
     gs.legal.n = 0;
-    lm.flipCount = 0;
     for(int i = 0 ; i<gs.ec.n ; i++)
     {
         if(isEmptyCellLegal(gs,lm,gs.ec.ec[i]))
@@ -131,7 +133,6 @@ void calculateLegalMoves(gameState& gs)
             gs.legal.legals[gs.legal.n] = lm;
             gs.legal.n++;
         }
-        lm.flipCount = 0;
     }
 }
 
@@ -191,7 +192,7 @@ void playLegal(gameState& gs,int id)
     {
         gs.b[lm.toFlip[i].row][lm.toFlip[i].col].color = gs.currentPlayer;
     }
-    gs.nbP[gs.currentPlayer] += lm.flipCount;
+    gs.nbP[gs.currentPlayer] += lm.flipCount + 1;
     gs.currentPlayer = !gs.currentPlayer;
 }
 

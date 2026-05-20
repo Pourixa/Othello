@@ -1,5 +1,4 @@
 #include "graphics.h"
-#include "data.h"
 using namespace std;
 
 const int OFFSET = 5;
