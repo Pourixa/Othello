@@ -18,6 +18,6 @@ bool isClickLegal(const gameState& gs,int row , int col , int& id);
 void playLegal(gameState& gs,int id);
 void addEmptyCellOneDirection(gameState&gs ,int row , int col, int rowDirection , int colDirection);
 void addEmptyCellAllDirections(gameState& gs , int row , int col);
-bool playMove(gameState& gs  , int boardX1 ,int boardY1 , int boardX2 ,int boardY2 ,int xMouse , int yMouse );
-bool isGameOver(gameState& gs);
+bool playMove(gameState& gs  , int row , int col);
+bool isGameOver(gameState gs);
 

@@ -63,9 +63,9 @@ bool test_isEmptyCellLegalOneDirection()
     initGame(gs,4,0);
     legalMove lm;
     lm.flipCount = 0;
-    bool flag = isEmptyCellLegalOneDirection(gs,lm,gs.ec.ec[gs.b[2][3].id],1,0);
+    bool flag = isEmptyCellLegalOneDirection(gs,lm,gs.ec.ec[gs.b[0][1].id],1,0);
     flag = flag &&
-            isEmptyCellLegalOneDirection(gs,lm,gs.ec.ec[gs.b[2][2].id],1,1) == false &&
+            isEmptyCellLegalOneDirection(gs,lm,gs.ec.ec[gs.b[0][0].id],1,1) == false &&
             lm.flipCount == 1;
     if (flag) {
         cout << "test_isEmptyCellLegalOneDirection passed! " << endl;
@@ -221,10 +221,43 @@ void printBoard(const gameState& gs)
     cout << endl;
 }
 
-
-int main()
+void playConsoleGameVSPlayer()
 {
-gameState gs;
-    initGame(gs,4,1);
-    printBoard(gs);
+    gameState gs;
+    int input1 , input2;
+    cout << "entrez votre choix de la taile: ";
+    cin >> input1;
+    cout<< "entrez votre choix de la position depart: ";
+    cin >> input2;
+    initGame(gs,input1,input2);
+    while(!isGameOver(gs)) {
+        printBoard(gs);
+        calculateLegalMoves(gs);
+        int row, col;
+        do {
+            if (gs.currentPlayer) {
+                cout << "entrez le choix de la ligne du blanc: ";
+                cin >> row;
+                cout << "entrez le choix de la colonne du blanc: ";
+                cin >> col;
+
+            } else {
+                cout << "entrez le choix de la ligne du noir: ";
+                cin >> row;
+                cout << "entrez le choix de la colonne du noir: ";
+                cin >> col;
+            }
+        } while (!playMove(gs,row,col));
+    }
+    if(gs.nbP[false] > gs.nbP[true])
+        cout<<"NOIR A GAGNE";
+    else if (gs.nbP[false] < gs.nbP[true])
+        cout<<"BLANC A GAGNE";
+    else
+        cout<<"PERSONNE A GAGNE";
+}
+
+
+int main(){
+playConsoleGameVSPlayer();
 }

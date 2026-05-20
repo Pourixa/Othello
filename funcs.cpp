@@ -60,14 +60,14 @@ void initGame(gameState& gs , int n ,int choice)
         gs.b[r2][c2].color = 1;
     }
 
-    for(int i = 2 ; i<=5 ; i++)
-        addEmptyCell(gs,2,i);
-    for(int i = 2 ; i<=5 ; i++)
-        addEmptyCell(gs,5,i);
-    for(int i = 3 ; i<=4 ; i++)
-        addEmptyCell(gs,i,2);
-    for(int i = 3 ; i<=4 ; i++)
-        addEmptyCell(gs,i,5);
+    for(int i = c2 - 1 ; i<= c1 + 1 ; i++)
+        addEmptyCell(gs,r2 - 1,i);
+    for(int i = c2 - 1 ; i<=c1 + 1 ; i++)
+        addEmptyCell(gs,r1+1,i);
+    for(int i = r2 ; i<=r1 ; i++)
+        addEmptyCell(gs,i,c2 - 1);
+    for(int i = r2 ; i<=r1 ; i++)
+        addEmptyCell(gs,i,c1 + 1);
     gs.nbP[false] = 2;
     gs.nbP[true] = 2;
     gs.currentPlayer = false;
@@ -79,6 +79,8 @@ void initGame(gameState& gs , int n ,int choice)
 
 bool checkCell(const gameState& gs,int row , int col ,int color)
 {
+    if(row < 0 || row >= gs.n || col < 0 || col >= gs.n)
+        return false;
     return  gs.b[row][col].color == color;
 }
 
@@ -213,12 +215,11 @@ void addEmptyCellAllDirections(gameState& gs , int row , int col)
     addEmptyCellOneDirection(gs,row,col,-1,-1);
 }
 
-bool playMove(gameState& gs  , int boardX1 ,int boardY1 , int boardX2 ,int boardY2 ,int xMouse , int yMouse )
+bool playMove(gameState& gs  , int row , int col)
 {
-    int row,col;
     int id;
-    if(verifyClick(gs,boardX1,boardY1,boardX2,boardY2,xMouse,yMouse,row,col))
-    {
+//    if(verifyClick(gs,boardX1,boardY1,boardX2,boardY2,xMouse,yMouse,row,col))
+//    {
         if(isClickLegal(gs,row,col,id))
         {
             playLegal(gs,id);
@@ -226,11 +227,11 @@ bool playMove(gameState& gs  , int boardX1 ,int boardY1 , int boardX2 ,int board
             return true;
         }
         return false;
-    }
+//    }
     return false;
 }
 
-bool isGameOver(gameState& gs)
+bool isGameOver(gameState gs)
 {
     gs.currentPlayer = !gs.currentPlayer;
     calculateLegalMoves(gs);
