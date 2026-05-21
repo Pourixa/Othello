@@ -154,5 +154,4 @@ struct gameState {
     legalMoves legal;
     numberOfPions nbP; // 0 : black , 1 : white
     bool currentPlayer; // false : black , true: white
-    bool gameOver;
 };

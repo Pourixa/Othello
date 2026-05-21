@@ -71,7 +71,6 @@ void initGame(gameState& gs , int n ,int choice)
     gs.nbP[false] = 2;
     gs.nbP[true] = 2;
     gs.currentPlayer = false;
-    gs.gameOver = false;
 }
 
 
@@ -233,8 +232,18 @@ bool playMove(gameState& gs  , int row , int col)
 
 bool isGameOver(gameState gs)
 {
-    gs.currentPlayer = !gs.currentPlayer;
-    calculateLegalMoves(gs);
-    return gs.legal.n == 0;
-}
+       if(gs.ec.n == 0) {
+           return true;
+       }
+       if (gs.legal.n == 0)
+       {
+        gs.currentPlayer = !gs.currentPlayer;
+           calculateLegalMoves(gs);
+           if(gs.legal.n ==0)
+           {
+               return true;
+           }
+           }
+    return false;
+    }
 
