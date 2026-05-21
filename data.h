@@ -147,9 +147,13 @@ struct legalMoves
 
 using numberOfPions =array<int , 2>;
 
+using difficulties = array<int , 3>;
+
 struct gameState {
     boardArray b;
     int n; //board size
+    difficulties diffs;
+    int difficulty ;
     emptyCells ec;
     legalMoves legal;
     numberOfPions nbP; // 0 : black , 1 : white
