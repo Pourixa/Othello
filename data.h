@@ -153,7 +153,8 @@ using difficulties = array<int , 3>;
 
 struct gameState {
     bool help = true;
-    bool bot;
+    bool bot = false;
+    bool color = 0;
     int posInit = 0;
     boardArray b;
     int n = 8; //board size

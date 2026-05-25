@@ -627,7 +627,7 @@ void playLegalInterface(const gameState& gs , int legalID)
     putToken(!gs.currentPlayer,gs.legal.legals[legalID].row,gs.legal.legals[legalID].col,gs.n);
     turnTokens(!gs.currentPlayer,gs.legal.legals[legalID],gs.n);
 }
-void dessinPage(const UI &ui, const gameState &game,int selectableZoneID)
+void dessinPage(const UI &ui, gameState &game,int selectableZoneID)
 {
     const page& p = ui.pl[ui.pageID];
     if(selectableZoneID == -1 && ui.pageID != 4) {
@@ -760,6 +760,7 @@ void dessinPage(const UI &ui, const gameState &game,int selectableZoneID)
         }
     }
 //     game page should be written here
+    if(game.bot == false){
     if(ui.pageID == 4 && selectableZoneID == -1)
     {
         if(game.posInit == 0) {
@@ -779,9 +780,64 @@ void dessinPage(const UI &ui, const gameState &game,int selectableZoneID)
                 showLegalMoves(game);
         }
     }
-    else if(ui.pageID == 4 & selectableZoneID == 1)
+    else if(ui.pageID == 4 && selectableZoneID == 1)
     {
         showLegalMoves(game);
+    }}
+    else
+    {
+        int row,col;
+        int legalID;
+        if(ui.pageID == 4 && selectableZoneID == -1)
+        {
+            if(game.posInit == 0) {
+                setbkcolor(BLACK);
+                setfillstyle(SOLID_FILL,BLACK);
+                setcolor(BLACK);
+                firstPositionBoard(BOARD_X1, BOARD_Y1, BOARD_X2, BOARD_Y2, game.n);
+                if(game.help && game.currentPlayer == game.color)
+                    showLegalMoves(game);
+                else
+                {
+                    botLogic(game,game.difficulty,row,col);
+                    playMove(game,row,col,legalID);
+                    playLegalInterface(game,legalID);
+                    selectableZoneID = 1;
+                    calculateLegalMoves(game);
+                    showLegalMoves(game);
+                }
+            }
+            else {
+                setbkcolor(BLACK);
+                setfillstyle(SOLID_FILL,BLACK);
+                setcolor(BLACK);
+                secondPositionBoard(BOARD_X1, BOARD_Y1, BOARD_X2, BOARD_Y2, game.n);
+                if(game.help && game.currentPlayer == game.color)
+                    showLegalMoves(game);
+                else
+                {
+                    botLogic(game,game.difficulty,row,col);
+                    playMove(game,row,col,legalID);
+                    playLegalInterface(game,legalID);
+                    selectableZoneID = 1;
+                    calculateLegalMoves(game);
+                    showLegalMoves(game);
+                }
+            }
+        }
+        else if(ui.pageID == 4 && selectableZoneID == 1 && game.currentPlayer == game.color)
+        {
+            showLegalMoves(game);
+        }
+        else if (ui.pageID == 4 && selectableZoneID == 1 && game.bot)
+        {
+            botLogic(game,game.difficulty,row,col);
+            playMove(game,row,col,legalID);
+            playLegalInterface(game,legalID);
+            selectableZoneID = 1;
+            calculateLegalMoves(game);
+            showLegalMoves(game);
+        }
     }
 }
 
@@ -789,11 +845,19 @@ bool unCLic(UI &ui, int x, int y, gameState &game,int& ID) {
     page &p = ui.pl[ui.pageID];
     if(ui.pageID != 4) {
         for (int i = 0; i < p.nbNavigZones; i++) {
-            navigZone &nz = p.nl[i];
+            const navigZone &nz = p.nl[i];
             for (int j = 0; j < nz.n; j++) {
-                navigButton &nb = nz.bs[j];
+                const navigButton &nb = nz.bs[j];
                 if (x >= nb.b.x1 && x <= nb.b.x2 && y >= nb.b.y1 && y <= nb.b.y2) {
                     ui.pageID = nb.toPage;
+                    if(nb.b.id == 104)
+                    {
+                        game.bot = true;
+                        if(ui.pl[0].sl[0].bl[0].selected)
+                            game.color = 0;
+                        else
+                            game.color = 1;
+                    }
                     if (nb.toPage == 4) {
                         initGame(game);
                         calculateLegalMoves(game);
@@ -838,25 +902,43 @@ bool unCLic(UI &ui, int x, int y, gameState &game,int& ID) {
     }
     else
     {
-        if(!game.bot)
         int row ,col;
         int legalID;
-        if(verifyClick(game,BOARD_X1,BOARD_Y1,BOARD_X2,BOARD_Y2,x,y,row,col))
-        {
-            if(playMove(game,row,col,legalID))
-            {
+        if(!game.bot) {
+            if (verifyClick(game, BOARD_X1, BOARD_Y1, BOARD_X2, BOARD_Y2, x, y, row, col)) {
+                if (playMove(game, row, col, legalID)) {
 
-                playLegalInterface(game,legalID);
-                ID = 1 ; // the click was in the board and was legal
-                calculateLegalMoves(game);
-                game.isGameOver = isGameOver(game);
-                if(game.legal.n == 0) {
-                    game.currentPlayer = !game.currentPlayer;
+                    playLegalInterface(game, legalID);
+                    ID = 1; // the click was in the board and was legal
                     calculateLegalMoves(game);
+                    game.isGameOver = isGameOver(game);
+                    if (game.legal.n == 0) {
+                        game.currentPlayer = !game.currentPlayer;
+                        calculateLegalMoves(game);
+                    }
+                    return true;
                 }
-                return true;
             }
+        }
+        else
+        {
+            if(game.currentPlayer == game.color)
+            {
+                if (verifyClick(game, BOARD_X1, BOARD_Y1, BOARD_X2, BOARD_Y2, x, y, row, col)) {
+                    if (playMove(game, row, col, legalID)) {
 
+                        playLegalInterface(game, legalID);
+                        ID = 1; // the click was in the board and was legal
+                        calculateLegalMoves(game);
+                        game.isGameOver = isGameOver(game);
+                        if (game.legal.n == 0) {
+                            game.currentPlayer = !game.currentPlayer;
+                            calculateLegalMoves(game);
+                        }
+                        return true;
+                    }
+                }
+            }
         }
 
     }

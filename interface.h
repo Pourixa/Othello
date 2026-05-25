@@ -28,7 +28,7 @@ void box(int x1 , int y1 , int x2 , int y2 );
 void showLegalMoves(const gameState& gs);
 void playLegalInterface(const gameState&gs,int legalID);
 void mesPages(UI &ui);
-void dessinPage(const UI &ui, const gameState &game,int selectableZoneID);
+void dessinPage(const UI &ui,  gameState &game,int selectableZoneID);
 bool unCLic(UI &ui, int x, int y, gameState &game,int& ID);
 
 #endif
