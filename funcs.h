@@ -9,7 +9,7 @@ using namespace std;
 bool addEmptyCell(gameState& gs , int row , int col);
 bool removeEmptyCell(gameState& gs,int row , int col);
 //0 for standard position , 1 for 2 up 2 down pos
-void initGame(gameState& gs , int n ,int choice);
+void initGame(gameState& gs);
 bool checkCell(const gameState& gs,int row , int col ,int color);
 bool isEmptyCellLegalOneDirection(const gameState& gs ,legalMove& lm , const emptyCell& cell ,int rowDirection , int colDirection);
 bool isEmptyCellLegal(const gameState& gs ,legalMove& lm , const emptyCell& cell);
@@ -19,7 +19,7 @@ bool isClickLegal(const gameState& gs,int row , int col , int& id);
 void playLegal(gameState& gs,int id);
 void addEmptyCellOneDirection(gameState&gs ,int row , int col, int rowDirection , int colDirection);
 void addEmptyCellAllDirections(gameState& gs , int row , int col);
-bool playMove(gameState& gs  , int row , int col);
+bool playMove(gameState& gs  , int row , int col,int &id);
 bool isGameOver(gameState gs);
 
 int evaluateState(const gameState &gs);

@@ -32,9 +32,8 @@ bool removeEmptyCell(gameState& gs,int row , int col)
 }
 
 //0 for standard position , 1 for 2 up 2 down pos
-void initGame(gameState& gs , int n ,int choice)
+void initGame(gameState& gs)
 {
-    gs.n = n;
     gs.ec.n =0;
 
     for(int i = 0 ;i<gs.n ; i++) {
@@ -43,9 +42,9 @@ void initGame(gameState& gs , int n ,int choice)
             gs.b[i][j].id = -1;
         }
     }
-    int r1 = n/2 , r2 = r1-1;
-    int c1 = n/2 , c2 = c1-1;
-    if(choice == 0)
+    int r1 = gs.n/2 , r2 = r1-1;
+    int c1 = gs.n/2 , c2 = c1-1;
+    if(gs.posInit == 0)
     {
         gs.b[r1][c1].color = 1;
         gs.b[r1][c2].color = 0;
@@ -55,10 +54,10 @@ void initGame(gameState& gs , int n ,int choice)
     }
     else
     {
-        gs.b[r1][c1].color = 0;
-        gs.b[r1][c2].color = 0;
-        gs.b[r2][c1].color = 1;
-        gs.b[r2][c2].color = 1;
+        gs.b[r2][c1].color = 0;
+        gs.b[r2][c2].color = 0;
+        gs.b[r1][c1].color = 1;
+        gs.b[r1][c2].color = 1;
     }
 
     for(int i = c2 - 1 ; i<= c1 + 1 ; i++)
@@ -78,9 +77,9 @@ void initGame(gameState& gs , int n ,int choice)
     >> trash >> gs.diffs[1]
     >> trash>> gs.diffs[2];
     config.close();
-    if(n == 4)
+    if(gs.n == 4)
         gs.difficulty = gs.diffs[0];
-    else if (n == 6)
+    else if (gs.n == 6)
         gs.difficulty = gs.diffs[1];
     else
         gs.difficulty = gs.diffs[2];
@@ -177,7 +176,7 @@ bool verifyClick(const gameState& gs , int boardX1 ,int boardY1 , int boardX2 ,i
         }
 
         row = yCount;
-        col = xCount;
+        col = xCount - 1;
         return true;
     }
     return false;
@@ -230,9 +229,8 @@ void addEmptyCellAllDirections(gameState& gs , int row , int col)
     addEmptyCellOneDirection(gs,row,col,-1,-1);
 }
 
-bool playMove(gameState& gs  , int row , int col)
+bool playMove(gameState& gs  , int row , int col , int& id)
 {
-    int id;
 //    if(verifyClick(gs,boardX1,boardY1,boardX2,boardY2,xMouse,yMouse,row,col))
 //    {
         if(isClickLegal(gs,row,col,id))
@@ -243,7 +241,7 @@ bool playMove(gameState& gs  , int row , int col)
         }
         return false;
 //    }
-    return false;
+  //  return false;
 }
 
 bool isGameOver(gameState gs)
@@ -308,13 +306,14 @@ int minimax(const gameState &gs, int level, int depth,int alpha ,int beta, int &
         int value = -1000, tValue, j=0;
 
         int Trow, Tcol;
+        int k;
         gameState gsCopy;
         int i =0;
         while(i<gs.legal.n && alpha < beta) {
             gsCopy = gs;
             Trow = gs.legal.legals[i].row;
             Tcol = gs.legal.legals[i].col;
-            playMove(gsCopy, Trow, Tcol);
+            playMove(gsCopy, Trow, Tcol,k);
             calculateLegalMoves(gsCopy);
             tValue = minimax(gsCopy, level + 1, depth,alpha,beta, row, col);
             if (tValue > value) {
@@ -331,13 +330,14 @@ int minimax(const gameState &gs, int level, int depth,int alpha ,int beta, int &
     } else {
         int value = 1000, tValue, j = 0;
         int Trow, Tcol;
+        int k;
         gameState gsCopy;
         int i = 0;
         while(i<gs.legal.n && beta>alpha) {
             gsCopy = gs;
             Trow = gs.legal.legals[i].row;
             Tcol = gs.legal.legals[i].col;
-            playMove(gsCopy, Trow, Tcol);
+            playMove(gsCopy, Trow, Tcol,k);
             calculateLegalMoves(gsCopy);
             tValue = minimax(gsCopy, level + 1, depth,alpha,beta, row, col);
             if (tValue < value) {
@@ -363,119 +363,119 @@ void botLogic(const gameState &gs, int difficulty, int &row, int &col) {
         minimax(gs, 0, difficulty,-1000,1000, row, col);
 }
 
-void playConsoleGameVSPlayer() {
-    gameState gs;
-    int input1, input2;
-    cout << "entrez votre choix de la taile: ";
-    cin >> input1;
-    cout << "entrez votre choix de la position depart: ";
-    cin >> input2;
-    initGame(gs, input1, input2);
-    calculateLegalMoves(gs);
-    while (!isGameOver(gs)) {
-        printBoard(gs);
-        int row, col;
-        if (gs.legal.n == 0)
-            gs.currentPlayer = !gs.currentPlayer;
-        else {
-            if (gs.currentPlayer) {
-                do {
-                    cout << "entrez le choix de la ligne du blanc: ";
-                    cin >> row;
-                    cout << "entrez le choix de la colonne du blanc: ";
-                    cin >> col;
-                } while (!playMove(gs, row, col));
+//void playConsoleGameVSPlayer() {
+//    gameState gs;
+//    int input1, input2;
+//    cout << "entrez votre choix de la taile: ";
+//    cin >> input1;
+//    cout << "entrez votre choix de la position depart: ";
+//    cin >> input2;
+//    initGame(gs, input1, input2);
+//    calculateLegalMoves(gs);
+//    while (!isGameOver(gs)) {
+//        printBoard(gs);
+//        int row, col;
+//        if (gs.legal.n == 0)
+//            gs.currentPlayer = !gs.currentPlayer;
+//        else {
+//            if (gs.currentPlayer) {
+//                do {
+//                    cout << "entrez le choix de la ligne du blanc: ";
+//                    cin >> row;
+//                    cout << "entrez le choix de la colonne du blanc: ";
+//                    cin >> col;
+//                } while (!playMove(gs, row, col));
+//
+//            } else {
+//                do {
+//                    cout << "entrez le blanc de la ligne du blanc: ";
+//                    cin >> row;
+//                    cout << "entrez le b de la colonne du blanc: ";
+//                    cin >> col;
+//                } while (!playMove(gs, row, col));
+//            }
+//        }
+//        calculateLegalMoves(gs);
+//    }
+//    printBoard(gs);
+//
+//
+//    if (gs.nbP[false] > gs.nbP[true])
+//        cout << "NOIR A GAGNE";
+//    else if (gs.nbP[false] < gs.nbP[true])
+//        cout << "BLANC A GAGNE";
+//    else
+//        cout << "PERSONNE A GAGNE";
+//}
+//
+//void playConsoleGameVSBot() {
+//    gameState gs;
+//    int input1, input2, playerTurn;
+//    cout << "entrez votre choix de la taile: ";
+//    cin >> input1;
+//    cout << "entrez votre choix de la position depart: ";
+//    cin >> input2;
+//    cout << "Entrez votre coleur prefere: ";
+//    cin >> playerTurn;
+//    initGame(gs, input1, input2);
+//    calculateLegalMoves(gs);
+//    while (!isGameOver(gs)) {
+//        printBoard(gs);
+//        int row, col;
+//        if (gs.legal.n == 0)
+//            gs.currentPlayer = !gs.currentPlayer;
+//        else {
+//            if (gs.currentPlayer == playerTurn) {
+//                do {
+//                    cout << "entrez le choix de la ligne: ";
+//                    cin >> row;
+//                    cout << "entrez le choix de la colonne: ";
+//                    cin >> col;
+//                } while (!playMove(gs, row, col));
+//            } else {
+//                botLogic(gs, gs.difficulty, row, col);
+//                playMove(gs, row, col);
+//            }
+//        }
+//        calculateLegalMoves(gs);
+//    }
+//    printBoard(gs);
+//    if (gs.nbP[false] > gs.nbP[true])
+//        cout << "NOIR A GAGNE! ";
+//    else if (gs.nbP[false] < gs.nbP[true])
+//        cout << "BLANC A GAGNE! ";
+//    else
+//        cout << " EGALITE! ";
+//
+//
+//}
 
-            } else {
-                do {
-                    cout << "entrez le blanc de la ligne du blanc: ";
-                    cin >> row;
-                    cout << "entrez le b de la colonne du blanc: ";
-                    cin >> col;
-                } while (!playMove(gs, row, col));
-            }
-        }
-        calculateLegalMoves(gs);
-    }
-    printBoard(gs);
-
-
-    if (gs.nbP[false] > gs.nbP[true])
-        cout << "NOIR A GAGNE";
-    else if (gs.nbP[false] < gs.nbP[true])
-        cout << "BLANC A GAGNE";
-    else
-        cout << "PERSONNE A GAGNE";
-}
-
-void playConsoleGameVSBot() {
-    gameState gs;
-    int input1, input2, playerTurn;
-    cout << "entrez votre choix de la taile: ";
-    cin >> input1;
-    cout << "entrez votre choix de la position depart: ";
-    cin >> input2;
-    cout << "Entrez votre coleur prefere: ";
-    cin >> playerTurn;
-    initGame(gs, input1, input2);
-    calculateLegalMoves(gs);
-    while (!isGameOver(gs)) {
-        printBoard(gs);
-        int row, col;
-        if (gs.legal.n == 0)
-            gs.currentPlayer = !gs.currentPlayer;
-        else {
-            if (gs.currentPlayer == playerTurn) {
-                do {
-                    cout << "entrez le choix de la ligne: ";
-                    cin >> row;
-                    cout << "entrez le choix de la colonne: ";
-                    cin >> col;
-                } while (!playMove(gs, row, col));
-            } else {
-                botLogic(gs, gs.difficulty, row, col);
-                playMove(gs, row, col);
-            }
-        }
-        calculateLegalMoves(gs);
-    }
-    printBoard(gs);
-    if (gs.nbP[false] > gs.nbP[true])
-        cout << "NOIR A GAGNE! ";
-    else if (gs.nbP[false] < gs.nbP[true])
-        cout << "BLANC A GAGNE! ";
-    else
-        cout << " EGALITE! ";
-
-
-}
-
-void playConsoleBotVSBot()
-{
-    gameState gs;
-    int input1, input2, playerTurn;
-    cout << "entrez votre choix de la taile: ";
-    cin >> input1;
-    cout << "entrez votre choix de la position depart: ";
-    cin >> input2;
-    initGame(gs, input1, input2);
-    calculateLegalMoves(gs);
-    while (!isGameOver(gs)) {
-        printBoard(gs);
-        int row, col;
-        if (gs.legal.n == 0)
-            gs.currentPlayer = !gs.currentPlayer;
-        else {
-            botLogic(gs, gs.difficulty , row, col);
-            playMove(gs, row, col);
-        }
-        calculateLegalMoves(gs);
-    }
-    printBoard(gs);
-    if (gs.nbP[false] > gs.nbP[true])
-        cout << "NOIR A GAGNE! ";
-    else if (gs.nbP[false] < gs.nbP[true])
-        cout << "BLANC A GAGNE! ";
-    else
-        cout << " EGALITE! ";
-}
+//void playConsoleBotVSBot()
+//{
+//    gameState gs;
+//    int input1, input2, playerTurn;
+//    cout << "entrez votre choix de la taile: ";
+//    cin >> input1;
+//    cout << "entrez votre choix de la position depart: ";
+//    cin >> input2;
+//    initGame(gs, input1, input2);
+//    calculateLegalMoves(gs);
+//    while (!isGameOver(gs)) {
+//        printBoard(gs);
+//        int row, col;
+//        if (gs.legal.n == 0)
+//            gs.currentPlayer = !gs.currentPlayer;
+//        else {
+//            botLogic(gs, gs.difficulty , row, col);
+//            playMove(gs, row, col);
+//        }
+//        calculateLegalMoves(gs);
+//    }
+//    printBoard(gs);
+//    if (gs.nbP[false] > gs.nbP[true])
+//        cout << "NOIR A GAGNE! ";
+//    else if (gs.nbP[false] < gs.nbP[true])
+//        cout << "BLANC A GAGNE! ";
+//    else
+//        cout << " EGALITE! ";
+//}

@@ -2,6 +2,7 @@
 #include "data.h"
 #include "interface.h" 
 #include <cstring>
+#include "funcs.h"
 using namespace std;
 
 
@@ -51,14 +52,14 @@ void firstPositionBoard(int x1 ,int y1 , int x2 , int y2 ,int boardSize)
     int cY2 = midY + dy/2;
     //white tokens
 
-    setcolor(BLACK);
+    setcolor(WHITE);
     setfillstyle(SOLID_FILL,WHITE);
     fillellipse(cX1,cY1 ,rad,rad);
     fillellipse(cX2 ,cY2 ,rad,rad);
 
     //black token
 
-    setcolor(WHITE);
+    setcolor(BLACK);
     setfillstyle(SOLID_FILL,BLACK);
     fillellipse(cX2 ,cY1 ,rad,rad);
     fillellipse(cX1 ,cY2,rad,rad);
@@ -91,7 +92,7 @@ void secondPositionBoard(int x1 ,int y1 , int x2 , int y2 ,int boardSize)
     int cY2 = midY + dy/2;
     //white tokens
 
-    setcolor(BLACK);
+    setcolor(WHITE);
     setfillstyle(SOLID_FILL,WHITE);
     fillellipse(cX2 ,cY2 ,rad,rad);
     fillellipse(cX1 ,cY2,rad,rad);
@@ -99,7 +100,7 @@ void secondPositionBoard(int x1 ,int y1 , int x2 , int y2 ,int boardSize)
 
     //black token
 
-    setcolor(WHITE);
+    setcolor(BLACK);
     setfillstyle(SOLID_FILL,BLACK);
 
     fillellipse(cX1,cY1 ,rad,rad);
@@ -538,11 +539,97 @@ void mesPages(UI &ui)
     p3.nl[1].bs[0].b.t.font = 0; 
     p3.nl[1].bs[0].b.t.fontSize = 3;
     p3.nl[1].bs[0].toPage = 4;
+
+
+    //j'initialise la page
+    page &p4 = ui.pl[4];
+    p4.bgBox.x1 = 0;
+    p4.bgBox.y1 = 0;
+    p4.bgBox.x2 = 1580;
+    p4.bgBox.y2 = 920;
 }
 
+void showLegaMove(bool turn,int midx , int midy , int boardSize)
+{
+    int dx = (BOARD_X2 - BOARD_X1)/boardSize;
+    int rad = dx/2 - boardSize/4;
+    if(turn)
+        setcolor(WHITE);
+    else
+        setcolor(BLACK);
+    circle(midx,midy,rad);
+}
+
+void convertToXY(int row , int col , int&x , int& y,int boardSize)
+{
+    int dx = (BOARD_X2 - BOARD_X1)/boardSize;
+    int dy = (BOARD_Y2 - BOARD_Y1)/boardSize;
+    int cX0 = BOARD_X1 + dx/2;
+    int cY0 = BOARD_Y1 + dy/2;
+
+    x = cX0 + col * dx;
+    y = cY0 + row * dy;
+}
+
+void showLegalMoves(const gameState& gs)
+{
+    int x,y;
+    for(int i = 0 ; i<gs.legal.n ; i++)
+    {
+        convertToXY(gs.legal.legals[i].row,gs.legal.legals[i].col,x,y,gs.n);
+        showLegaMove(gs.currentPlayer,x,y,gs.n);
+    }
+
+}
+
+void putToken(bool turn,int row , int col,int boardSize)
+{
+    int x ,y;
+    int dx = (BOARD_X2 - BOARD_X1)/boardSize;
+    int rad = dx/2 - boardSize/4;
+    convertToXY(row,col,x,y,boardSize);
+    if(turn)
+    {
+        setcolor(WHITE);
+        setfillstyle(SOLID_FILL,WHITE);
+        fillellipse(x,y,rad,rad);
+    }
+    else
+    {
+        setfillstyle(SOLID_FILL,BLACK);
+        setcolor(BLACK);
+        fillellipse(x ,y ,rad,rad);
+    }
+}
+
+void turnTokens(bool turn,const legalMove& lm,int boardSize)
+{
+    for(int i = 0 ; i<lm.flipCount ; i++)
+    {
+        putToken(turn , lm.toFlip[i].row ,lm.toFlip[i].col,boardSize);
+    }
+}
+void cleanCell(int x , int y,int boardSize)
+{
+    int dx = (BOARD_X2 - BOARD_X1)/boardSize;
+    int rad = dx/2 - boardSize/4;
+    setcolor(GREEN);
+    circle(x,y,rad);
+}
+void playLegalInterface(const gameState& gs , int legalID)
+{
+    int x,y;
+    for(int i = 0 ; i<gs.legal.n ;i++)
+    {
+        convertToXY(gs.legal.legals[i].row,gs.legal.legals[i].col,x,y,gs.n);
+        cleanCell(x,y,gs.n);
+    }
+    putToken(!gs.currentPlayer,gs.legal.legals[legalID].row,gs.legal.legals[legalID].col,gs.n);
+    turnTokens(!gs.currentPlayer,gs.legal.legals[legalID],gs.n);
+}
 void dessinPage(const UI &ui, const gameState &game,int selectableZoneID)
 {
-    page p = ui.pl[ui.pageID];
+    const page& p = ui.pl[ui.pageID];
     if(selectableZoneID == -1 && ui.pageID != 4) {
 
         setbkcolor(BLACK);
@@ -672,62 +759,106 @@ void dessinPage(const UI &ui, const gameState &game,int selectableZoneID)
             }
         }
     }
-    // game page should be written here
+//     game page should be written here
+    if(ui.pageID == 4 && selectableZoneID == -1)
+    {
+        if(game.posInit == 0) {
+            setbkcolor(BLACK);
+            setfillstyle(SOLID_FILL,BLACK);
+            setcolor(BLACK);
+            firstPositionBoard(BOARD_X1, BOARD_Y1, BOARD_X2, BOARD_Y2, game.n);
+            if(game.help)
+                showLegalMoves(game);
+        }
+        else {
+            setbkcolor(BLACK);
+            setfillstyle(SOLID_FILL,BLACK);
+            setcolor(BLACK);
+            secondPositionBoard(BOARD_X1, BOARD_Y1, BOARD_X2, BOARD_Y2, game.n);
+            if(game.help)
+                showLegalMoves(game);
+        }
+    }
+    else if(ui.pageID == 4 & selectableZoneID == 1)
+    {
+        showLegalMoves(game);
+    }
 }
 
-bool unCLic(UI &ui, int x, int y, gameState &game,int& ID)
-{
+bool unCLic(UI &ui, int x, int y, gameState &game,int& ID) {
     page &p = ui.pl[ui.pageID];
-
-
-    for (int i = 0; i < p.nbNavigZones; i++)
-    {
-        navigZone &nz = p.nl[i];
-        for (int j = 0; j < nz.n; j++)
-        {
-            navigButton &nb = nz.bs[j];
-            if (x >= nb.b.x1 && x <= nb.b.x2 && y >= nb.b.y1 && y <= nb.b.y2)
-            {
-                ui.pageID = nb.toPage;
-                ID = -1;
-                return true;
-            }
-        }
-    }
-
-    for (int i = 0; i < p.nbSelectableZones; i++)
-    {
-        selectableZone &sz = p.sl[i];
-        for (int j = 0; j < sz.n; j++)
-        {
-            selectableButton &sb = sz.bl[j];
-            if (x >= sb.b.x1 && x <= sb.b.x2 && y >= sb.b.y1 && y <= sb.b.y2)
-            {
-                if (!sb.selected)
-                {
-                    for (int k = 0; k < sz.n; k++)
-                    {
-                        sz.bl[k].selected = false;
+    if(ui.pageID != 4) {
+        for (int i = 0; i < p.nbNavigZones; i++) {
+            navigZone &nz = p.nl[i];
+            for (int j = 0; j < nz.n; j++) {
+                navigButton &nb = nz.bs[j];
+                if (x >= nb.b.x1 && x <= nb.b.x2 && y >= nb.b.y1 && y <= nb.b.y2) {
+                    ui.pageID = nb.toPage;
+                    if (nb.toPage == 4) {
+                        initGame(game);
+                        calculateLegalMoves(game);
                     }
-                    sb.selected = true;
-
-                    if (strcmp(sb.b.t.t, "6x6") == 0 || sb.b.id == 6) {
-                        game.n = 6;
-                    } else if (strcmp(sb.b.t.t, "8x8") == 0 || sb.b.id == 8) {
-                        game.n = 8;
-                    } else if (strcmp(sb.b.t.t, "4x4") == 0 || sb.b.id == 4) {
-                        game.n = 4;
-                    }
+                    ID = -1;
+                    return true;
                 }
-                ID = i;
-                return true;
+            }
+        }
+        for (int i = 0; i < p.nbSelectableZones; i++) {
+            selectableZone &sz = p.sl[i];
+            for (int j = 0; j < sz.n; j++) {
+                selectableButton &sb = sz.bl[j];
+                if (x >= sb.b.x1 && x <= sb.b.x2 && y >= sb.b.y1 && y <= sb.b.y2) {
+                    if (!sb.selected) {
+                        for (int k = 0; k < sz.n; k++) {
+                            sz.bl[k].selected = false;
+                        }
+                        sb.selected = true;
+
+                        if (strcmp(sb.b.t.t, "6x6") == 0 || sb.b.id == 6) {
+                            game.n = 6;
+                        } else if (strcmp(sb.b.t.t, "8x8") == 0 || sb.b.id == 8) {
+                            game.n = 8;
+                        } else if (strcmp(sb.b.t.t, "4x4") == 0 || sb.b.id == 4) {
+                            game.n = 4;
+                        }
+                        if (sb.b.id == 301)
+                            game.posInit = 0;
+                        else if (sb.b.id == 302)
+                            game.posInit = 1;
+                        if (sb.b.id == 303)
+                            game.help = true;
+                        else if (sb.b.id == 304)
+                            game.help = false;
+                    }
+                    ID = i;
+                    return true;
+                }
             }
         }
     }
-
-    if (ui.pageID == 4)
+    else
     {
-       
+        if(!game.bot)
+        int row ,col;
+        int legalID;
+        if(verifyClick(game,BOARD_X1,BOARD_Y1,BOARD_X2,BOARD_Y2,x,y,row,col))
+        {
+            if(playMove(game,row,col,legalID))
+            {
+
+                playLegalInterface(game,legalID);
+                ID = 1 ; // the click was in the board and was legal
+                calculateLegalMoves(game);
+                game.isGameOver = isGameOver(game);
+                if(game.legal.n == 0) {
+                    game.currentPlayer = !game.currentPlayer;
+                    calculateLegalMoves(game);
+                }
+                return true;
+            }
+
+        }
+
     }
     return false;
 }
