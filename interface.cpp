@@ -446,7 +446,7 @@ void mesPages(UI &ui)
     zonePos.bl[0].b.x2 = 600; 
     zonePos.bl[0].b.y2 = 320; 
     zonePos.bl[0].b.id = 301;
-    zonePos.bl[0].b.t.t = (char*)"Selectionner.";
+    zonePos.bl[0].b.t.t = (char*)"Selectionner";
     zonePos.bl[0].b.t.font = 0; 
     zonePos.bl[0].b.t.fontSize = 2;
     zonePos.bl[0].selected = true; 
@@ -456,7 +456,7 @@ void mesPages(UI &ui)
     zonePos.bl[1].b.x2 = 1220; 
     zonePos.bl[1].b.y2 = 320;
     zonePos.bl[1].b.id = 302;
-    zonePos.bl[1].b.t.t = (char*)"Selectionner.";
+    zonePos.bl[1].b.t.t = (char*)"Selectionner";
     zonePos.bl[1].b.t.font = 0; 
     zonePos.bl[1].b.t.fontSize = 2;
     zonePos.bl[1].selected = false;
@@ -469,7 +469,7 @@ void mesPages(UI &ui)
     zoneGrille.bl[0].b.x2 = 500; 
     zoneGrille.bl[0].b.y2 = 560;
     zoneGrille.bl[0].b.id = 8; 
-    zoneGrille.bl[0].b.t.t = (char*)"Selectionner.";
+    zoneGrille.bl[0].b.t.t = (char*)"Selectionner";
     zoneGrille.bl[0].b.t.font = 0; 
     zoneGrille.bl[0].b.t.fontSize = 2;
     zoneGrille.bl[0].selected = true; 
@@ -479,7 +479,7 @@ void mesPages(UI &ui)
     zoneGrille.bl[1].b.x2 = 920; 
     zoneGrille.bl[1].b.y2 = 560;
     zoneGrille.bl[1].b.id = 6;
-    zoneGrille.bl[1].b.t.t = (char*)"Selectionner.";
+    zoneGrille.bl[1].b.t.t = (char*)"Selectionner";
     zoneGrille.bl[1].b.t.font = 0; 
     zoneGrille.bl[1].b.t.fontSize = 2;
     zoneGrille.bl[1].selected = false;
@@ -489,7 +489,7 @@ void mesPages(UI &ui)
     zoneGrille.bl[2].b.x2 = 1320; 
     zoneGrille.bl[2].b.y2 = 560;
     zoneGrille.bl[2].b.id = 4;
-    zoneGrille.bl[2].b.t.t = (char*)"Selectionner.";
+    zoneGrille.bl[2].b.t.t = (char*)"Selectionner";
     zoneGrille.bl[2].b.t.font = 0; 
     zoneGrille.bl[2].b.t.fontSize = 2;
     zoneGrille.bl[2].selected = false;
@@ -502,7 +502,7 @@ void mesPages(UI &ui)
     zoneAide.bl[0].b.x2 = 620;  
     zoneAide.bl[0].b.y2 = 760;
     zoneAide.bl[0].b.id = 303;
-    zoneAide.bl[0].b.t.t = (char*)"Selectionner.";
+    zoneAide.bl[0].b.t.t = (char*)"Selectionner";
     zoneAide.bl[0].b.t.font = DEFAULT_FONT; 
     zoneAide.bl[0].b.t.fontSize = 2;
     zoneAide.bl[0].selected = true;
@@ -512,7 +512,7 @@ void mesPages(UI &ui)
     zoneAide.bl[1].b.x2 = 1220; 
     zoneAide.bl[1].b.y2 = 760;
     zoneAide.bl[1].b.id = 304;
-    zoneAide.bl[1].b.t.t = (char*)"Selectionner.";
+    zoneAide.bl[1].b.t.t = (char*)"Selectionner";
     zoneAide.bl[1].b.t.font = DEFAULT_FONT; 
     zoneAide.bl[1].b.t.fontSize = 2;
     zoneAide.bl[1].selected = false;

@@ -1,10 +1,6 @@
 #include "funcs.h"
-<<<<<<< HEAD
 #include "interface.h"
-=======
-#include <random>
 
->>>>>>> 66e0b7c50c9be66831b5ca9d09dcaf2d0e8ee73f
 using namespace std;
 
 
@@ -199,21 +195,19 @@ void globalTest() {
 }
 
 
-int main(){
-//playConsoleGameVSPlayer();
+int main() {
     opengraphsize(1580, 920);
 
     UI monUI;
     gameState monJeu;
 
     mesPages(monUI);
-    monUI.pageID = 0; 
+    monUI.pageID = 0;
     monJeu.gameOver = false;
 
-    int page_courante = 0; 
+    int page_courante = 0;
 
-    while (monUI.pageID != -1 && !monJeu.gameOver)
-    {
+    while (monUI.pageID != -1 && !monJeu.gameOver) {
         // 1. On dit à l'ordinateur de dessiner sur la page INVISIBLE (en arrière-plan)
         setactivepage(1 - page_courante);
 
@@ -227,8 +221,7 @@ int main(){
         // 5. On change l'index de page pour le prochain tour de boucle
         page_courante = 1 - page_courante;
 
-        if (buttonhit())
-        {
+        if (buttonhit()) {
             int x, y;
             getmouse(x, y);
             unCLic(monUI, x, y, monJeu);
@@ -239,7 +232,4 @@ int main(){
 
     closegraph();
     return 0;
-
-int main() {
-    playConsoleBotVSBot();
 }

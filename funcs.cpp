@@ -209,6 +209,7 @@ void playLegal(gameState& gs,int id)
         gs.b[lm.toFlip[i].row][lm.toFlip[i].col].color = gs.currentPlayer;
     }
     gs.nbP[gs.currentPlayer] += lm.flipCount + 1;
+        gs.nbP[!gs.currentPlayer] -= lm.flipCount;
     gs.currentPlayer = !gs.currentPlayer;
 }
 
@@ -288,7 +289,7 @@ void printBoard(const gameState &gs) {
 
         cout << endl;
     }
-
+    cout<<"Black: " << gs.nbP[false] << " White: " << gs.nbP[true]<<endl;
     cout << endl;
 }
 

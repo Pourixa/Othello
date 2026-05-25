@@ -1,6 +1,7 @@
 #include <iostream>
 #include "data.h"
 #include "cmath"
+#include <random>
 using namespace std;
 
 //gamePart
