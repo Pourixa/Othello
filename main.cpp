@@ -1,4 +1,5 @@
 #include "funcs.h"
+#include "interface.h"
 using namespace std;
 
 bool test_initGame()
@@ -259,5 +260,43 @@ void playConsoleGameVSPlayer()
 
 
 int main(){
-playConsoleGameVSPlayer();
+//playConsoleGameVSPlayer();
+    opengraphsize(1580, 920);
+
+    UI monUI;
+    gameState monJeu;
+
+    mesPages(monUI);
+    monUI.pageID = 0; 
+    monJeu.gameOver = false;
+
+    int page_courante = 0; 
+
+    while (monUI.pageID != -1 && !monJeu.gameOver)
+    {
+        // 1. On dit à l'ordinateur de dessiner sur la page INVISIBLE (en arrière-plan)
+        setactivepage(1 - page_courante);
+
+        cleardevice();
+
+        dessinPage(monUI, monJeu);
+
+        // 4. On switch ! La page qu'on vient de terminer devient VISIBLE d'un coup sec
+        setvisualpage(1 - page_courante);
+
+        // 5. On change l'index de page pour le prochain tour de boucle
+        page_courante = 1 - page_courante;
+
+        if (buttonhit())
+        {
+            int x, y;
+            getmouse(x, y);
+            unCLic(monUI, x, y, monJeu);
+        }
+
+        delay(20);
+    }
+
+    closegraph();
+    return 0;
 }

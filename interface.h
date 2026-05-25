@@ -1,3 +1,6 @@
+#ifndef interface_h
+#define interface_h
+#include "data.h"
 #include "graphics.h"
 using namespace std;
 
@@ -21,3 +24,10 @@ void secondPositionBoard(int x1 ,int y1 , int x2 , int y2 ,int boardSize);
 void button(int x1 , int y1 , int x2 , int y2 ,int font ,int fontSize ,const char * text);
 
 void box(int x1 , int y1 , int x2 , int y2 );
+
+
+void mesPages(UI &ui);
+void dessinPage(const UI &ui, const gameState &game);
+void unCLic(UI &ui, int x, int y, gameState &game);
+
+#endif

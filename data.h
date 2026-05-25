@@ -1,3 +1,5 @@
+#ifndef data_h
+#define data_h
 #include <array>
 using namespace  std;
 
@@ -40,7 +42,7 @@ using textList = array<text,TEXT_SIZE>;
 
 struct clickableButton
 {
-    int x1,x2,x3 ,x4;
+    int x1,y1,x2,y2;
     textButton t;
     int id;
 };
@@ -156,3 +158,5 @@ struct gameState {
     bool currentPlayer; // false : black , true: white
     bool gameOver;
 };
+
+#endif
