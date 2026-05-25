@@ -502,7 +502,7 @@ void mesPages(UI &ui)
     zoneAide.bl[0].b.x2 = 620;  
     zoneAide.bl[0].b.y2 = 760;
     zoneAide.bl[0].b.id = 303;
-    zoneAide.bl[0].b.t.t = (char*)"Selectionner";
+    zoneAide.bl[0].b.t.t = (char*)"Oui";
     zoneAide.bl[0].b.t.font = DEFAULT_FONT; 
     zoneAide.bl[0].b.t.fontSize = 2;
     zoneAide.bl[0].selected = true;
@@ -512,7 +512,7 @@ void mesPages(UI &ui)
     zoneAide.bl[1].b.x2 = 1220; 
     zoneAide.bl[1].b.y2 = 760;
     zoneAide.bl[1].b.id = 304;
-    zoneAide.bl[1].b.t.t = (char*)"Selectionner";
+    zoneAide.bl[1].b.t.t = (char*)"Non";
     zoneAide.bl[1].b.t.font = DEFAULT_FONT; 
     zoneAide.bl[1].b.t.fontSize = 2;
     zoneAide.bl[1].selected = false;
@@ -663,7 +663,7 @@ void dessinPage(const UI &ui, const gameState &game)
     
 }
 
-void unCLic(UI &ui, int x, int y, gameState &game)
+bool unCLic(UI &ui, int x, int y, gameState &game)
 {
     page &p = ui.pl[ui.pageID];
 
@@ -677,7 +677,7 @@ void unCLic(UI &ui, int x, int y, gameState &game)
             if (x >= nb.b.x1 && x <= nb.b.x2 && y >= nb.b.y1 && y <= nb.b.y2)
             {
                 ui.pageID = nb.toPage; 
-                return;
+                return true;
             }
         }
     }
@@ -706,14 +706,14 @@ void unCLic(UI &ui, int x, int y, gameState &game)
                         game.n = 4;
                     }
                 }
-                return;
+                return true;
             }
         }
     }
-
 
     if (ui.pageID == 4)
     {
        
     }
+    return false;
 }

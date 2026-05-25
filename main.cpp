@@ -200,7 +200,7 @@ int main() {
 
     UI monUI;
     gameState monJeu;
-
+    bool reDraw = true;
     mesPages(monUI);
     monUI.pageID = 0;
     monJeu.gameOver = false;
@@ -209,22 +209,25 @@ int main() {
 
     while (monUI.pageID != -1 && !monJeu.gameOver) {
         // 1. On dit à l'ordinateur de dessiner sur la page INVISIBLE (en arrière-plan)
-        setactivepage(1 - page_courante);
+        if(reDraw) {
+            setactivepage(1 - page_courante);
 
-        cleardevice();
+            cleardevice();
 
-        dessinPage(monUI, monJeu);
+            dessinPage(monUI, monJeu);
 
-        // 4. On switch ! La page qu'on vient de terminer devient VISIBLE d'un coup sec
-        setvisualpage(1 - page_courante);
+            // 4. On switch ! La page qu'on vient de terminer devient VISIBLE d'un coup sec
+            setvisualpage(1 - page_courante);
 
-        // 5. On change l'index de page pour le prochain tour de boucle
-        page_courante = 1 - page_courante;
-
+            // 5. On change l'index de page pour le prochain tour de boucle
+            page_courante = 1 - page_courante;
+        }
+        reDraw = false;
         if (buttonhit()) {
             int x, y;
             getmouse(x, y);
-            unCLic(monUI, x, y, monJeu);
+            if(unCLic(monUI, x, y, monJeu))
+                reDraw = true;
         }
 
         delay(20);
