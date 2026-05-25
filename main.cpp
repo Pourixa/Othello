@@ -204,17 +204,16 @@ int main() {
     mesPages(monUI);
     monUI.pageID = 0;
     monJeu.gameOver = false;
-
+    int ID = -1;
     int page_courante = 0;
 
     while (monUI.pageID != -1 && !monJeu.gameOver) {
         // 1. On dit à l'ordinateur de dessiner sur la page INVISIBLE (en arrière-plan)
         if(reDraw) {
-            setactivepage(1 - page_courante);
-
-            cleardevice();
-
-            dessinPage(monUI, monJeu);
+            //setactivepage(1 - page_courante); for optimization of drawing when clinking on selectable button
+            if(ID == -1)
+                cleardevice();
+            dessinPage(monUI, monJeu,ID);
 
             // 4. On switch ! La page qu'on vient de terminer devient VISIBLE d'un coup sec
             setvisualpage(1 - page_courante);
@@ -226,7 +225,7 @@ int main() {
         if (buttonhit()) {
             int x, y;
             getmouse(x, y);
-            if(unCLic(monUI, x, y, monJeu))
+            if(unCLic(monUI, x, y, monJeu,ID))
                 reDraw = true;
         }
 

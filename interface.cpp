@@ -540,82 +540,122 @@ void mesPages(UI &ui)
     p3.nl[1].bs[0].toPage = 4;
 }
 
-void dessinPage(const UI &ui, const gameState &game)
+void dessinPage(const UI &ui, const gameState &game,int selectableZoneID)
 {
     page p = ui.pl[ui.pageID];
-    setbkcolor(BLACK);
+    if(selectableZoneID == -1 && ui.pageID != 4) {
 
-    setfillstyle(SOLID_FILL, BLACK);
-    setcolor(BLACK);
-    bar(p.bgBox.x1, p.bgBox.y1, p.bgBox.x2, p.bgBox.y2);
+        setbkcolor(BLACK);
 
-    if (ui.pageID == 0)
-    {
-        box(30, 30, 550, 890); 
-    }
+        setfillstyle(SOLID_FILL, BLACK);
+        setcolor(BLACK);
+        bar(p.bgBox.x1, p.bgBox.y1, p.bgBox.x2, p.bgBox.y2);
 
-    if (ui.pageID == 3)
-    {
-        box(60, 100, 1520, 860);
+        if (ui.pageID == 0) {
+            box(30, 30, 550, 890);
+        }
 
-        firstPositionBoard(200, 180, 350, 330, 2);
-        secondPositionBoard(800, 180, 950, 330, 2);
-    }
+        if (ui.pageID == 3) {
+            box(60, 100, 1520, 860);
 
-    for (int i = 0; i < p.nbTexts; i++)
-    {
-        const text &t = p.tl[i];
-        settextjustify(LEFT_TEXT, TOP_TEXT);
-        settextstyle(t.font, HORIZ_DIR, t.fontSize);
-        
-        if (ui.pageID == 0)
-            if (i == 0) setcolor(CYAN), setbkcolor(BLACK);
-            else setcolor(WHITE), setbkcolor(BOX_COLOR_MAIN);
-        else if (ui.pageID == 1)
-            if (i == 0) setcolor(LIGHTBLUE), setbkcolor(BLACK);
-            else setcolor(WHITE), setbkcolor(BLACK);
-        else if (ui.pageID == 3)
-        {
-            setcolor(WHITE);
+            firstPositionBoard(200, 180, 350, 330, 2);
+            secondPositionBoard(800, 180, 950, 330, 2);
+        }
+
+        for (int i = 0; i < p.nbTexts; i++) {
+            const text &t = p.tl[i];
+            settextjustify(LEFT_TEXT, TOP_TEXT);
+            settextstyle(t.font, HORIZ_DIR, t.fontSize);
+
+            if (ui.pageID == 0)
+                if (i == 0) setcolor(CYAN), setbkcolor(BLACK);
+                else setcolor(WHITE), setbkcolor(BOX_COLOR_MAIN);
+            else if (ui.pageID == 1)
+                if (i == 0) setcolor(LIGHTBLUE), setbkcolor(BLACK);
+                else setcolor(WHITE), setbkcolor(BLACK);
+            else if (ui.pageID == 3) {
+                setcolor(WHITE);
+                setbkcolor(BOX_COLOR_MAIN);
+            } else {
+                setcolor(WHITE);
+                setbkcolor(BLACK);
+            }
+
+            outtextxy(t.x, t.y, t.t);
+        }
+
+        if (ui.pageID == 3) {
+            settextjustify(CENTER_TEXT, CENTER_TEXT);
             setbkcolor(BOX_COLOR_MAIN);
-        }
-        else
-        {
             setcolor(WHITE);
-            setbkcolor(BLACK);
+            settextstyle(DEFAULT_FONT, HORIZ_DIR, 5);
+            outtextxy(200, 530, (char *) "8X8");
+            outtextxy(600, 530, (char *) "6X6");
+            outtextxy(1000, 530, (char *) "4X4");
         }
-        
-        outtextxy(t.x, t.y, t.t);
-    }
 
-    if (ui.pageID == 3)
-    {
-        settextjustify(CENTER_TEXT, CENTER_TEXT);
-        setbkcolor(BOX_COLOR_MAIN);
-        setcolor(WHITE);
-        settextstyle(DEFAULT_FONT, HORIZ_DIR, 5);
-        outtextxy(200, 530, (char*)"8X8");
-        outtextxy(600, 530, (char*)"6X6");
-        outtextxy(1000, 530, (char*)"4X4");
-    }
+        for (int i = 0; i < p.nbSelectableZones; i++) {
+            const selectableZone &sz = p.sl[i];
+            for (int j = 0; j < sz.n; j++) {
+                const selectableButton &sb = sz.bl[j];
 
-    for (int i = 0; i < p.nbSelectableZones; i++)
+                if (sb.selected) {
+                    // Calcule le centre
+                    int midx = sb.b.x1 + (sb.b.x2 - sb.b.x1) / 2;
+                    int midy = sb.b.y1 + (sb.b.y2 - sb.b.y1) / 2;
+
+                    setcolor(BUTTON_COLOR_SECOND);
+                    setfillstyle(SOLID_FILL, BUTTON_COLOR_SECOND);
+                    bar(sb.b.x1 - OFFSET, sb.b.y1 - OFFSET, sb.b.x2 + OFFSET, sb.b.y2 + OFFSET);
+
+                    setfillstyle(SOLID_FILL, LIGHTBLUE);
+                    setcolor(LIGHTBLUE);
+                    bar(sb.b.x1, sb.b.y1, sb.b.x2, sb.b.y2);
+
+                    setbkcolor(LIGHTBLUE);
+                    setcolor(BUTTON_COLOR_TEXT);
+                    settextjustify(CENTER_TEXT, CENTER_TEXT);
+                    settextstyle(sb.b.t.font, HORIZ_DIR, sb.b.t.fontSize);
+                    outtextxy(midx, midy, sb.b.t.t);
+
+                    setbkcolor(BLACK);
+                } else {
+                    button(sb.b.x1, sb.b.y1, sb.b.x2, sb.b.y2, sb.b.t.font, sb.b.t.fontSize, sb.b.t.t);
+                }
+            }
+        }
+
+        for (int i = 0; i < p.nbClickableZones; i++) {
+            const clickableZone &cz = p.cl[i];
+            for (int j = 0; j < cz.n; j++) {
+                const clickableButton &cb = cz.bl[j];
+                button(cb.x1, cb.y1, cb.x2, cb.y2, cb.t.font, cb.t.fontSize, cb.t.t);
+            }
+        }
+
+        for (int i = 0; i < p.nbNavigZones; i++) {
+            const navigZone &nz = p.nl[i];
+            for (int j = 0; j < nz.n; j++) {
+                const navigButton &nb = nz.bs[j];
+                button(nb.b.x1, nb.b.y1, nb.b.x2, nb.b.y2, nb.b.t.font, nb.b.t.fontSize, nb.b.t.t);
+            }
+        }
+    }
+    else
     {
-        const selectableZone &sz = p.sl[i];
-        for (int j = 0; j < sz.n; j++)
-        {
+        const selectableZone &sz = p.sl[selectableZoneID];
+        for (int j = 0; j < sz.n; j++) {
             const selectableButton &sb = sz.bl[j];
-            
-            if (sb.selected)
-            {
-                // Calcule le centre 
+
+            if (sb.selected) {
+                // Calcule le centre
                 int midx = sb.b.x1 + (sb.b.x2 - sb.b.x1) / 2;
-                int midy = sb.b.y1 + (sb.b.y2 - sb.b.y1) / 2; 
-                
+                int midy = sb.b.y1 + (sb.b.y2 - sb.b.y1) / 2;
+
                 setcolor(BUTTON_COLOR_SECOND);
                 setfillstyle(SOLID_FILL, BUTTON_COLOR_SECOND);
                 bar(sb.b.x1 - OFFSET, sb.b.y1 - OFFSET, sb.b.x2 + OFFSET, sb.b.y2 + OFFSET);
-                
+
                 setfillstyle(SOLID_FILL, LIGHTBLUE);
                 setcolor(LIGHTBLUE);
                 bar(sb.b.x1, sb.b.y1, sb.b.x2, sb.b.y2);
@@ -625,45 +665,17 @@ void dessinPage(const UI &ui, const gameState &game)
                 settextjustify(CENTER_TEXT, CENTER_TEXT);
                 settextstyle(sb.b.t.font, HORIZ_DIR, sb.b.t.fontSize);
                 outtextxy(midx, midy, sb.b.t.t);
-                
-                setbkcolor(BLACK); 
-            }
-            else
-            {
+
+                setbkcolor(BLACK);
+            } else {
                 button(sb.b.x1, sb.b.y1, sb.b.x2, sb.b.y2, sb.b.t.font, sb.b.t.fontSize, sb.b.t.t);
             }
         }
     }
-
-    for (int i = 0; i < p.nbClickableZones; i++)
-    {
-        const clickableZone &cz = p.cl[i];
-        for (int j = 0; j < cz.n; j++)
-        {
-            const clickableButton &cb = cz.bl[j];
-            button(cb.x1, cb.y1, cb.x2, cb.y2, cb.t.font, cb.t.fontSize, cb.t.t);
-        }
-    }
-
-    for (int i = 0; i < p.nbNavigZones; i++)
-    {
-        const navigZone &nz = p.nl[i];
-        for (int j = 0; j < nz.n; j++)
-        {
-            const navigButton &nb = nz.bs[j];
-            button(nb.b.x1, nb.b.y1, nb.b.x2, nb.b.y2, nb.b.t.font, nb.b.t.fontSize, nb.b.t.t);
-        }
-    }
-
-    if (ui.pageID == 4)
-    {
-        
-    }
-
-    
+    // game page should be written here
 }
 
-bool unCLic(UI &ui, int x, int y, gameState &game)
+bool unCLic(UI &ui, int x, int y, gameState &game,int& ID)
 {
     page &p = ui.pl[ui.pageID];
 
@@ -676,7 +688,8 @@ bool unCLic(UI &ui, int x, int y, gameState &game)
             navigButton &nb = nz.bs[j];
             if (x >= nb.b.x1 && x <= nb.b.x2 && y >= nb.b.y1 && y <= nb.b.y2)
             {
-                ui.pageID = nb.toPage; 
+                ui.pageID = nb.toPage;
+                ID = -1;
                 return true;
             }
         }
@@ -706,6 +719,7 @@ bool unCLic(UI &ui, int x, int y, gameState &game)
                         game.n = 4;
                     }
                 }
+                ID = i;
                 return true;
             }
         }
