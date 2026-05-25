@@ -21,3 +21,17 @@ void addEmptyCellAllDirections(gameState& gs , int row , int col);
 bool playMove(gameState& gs  , int row , int col);
 bool isGameOver(gameState gs);
 
+int evaluateState(const gameState &gs);
+
+void printBoard(const gameState &gs) ;
+
+int minimax(const gameState &gs, int level, int depth,int alpha ,int beta, int &row, int &col);
+
+void botLogic(const gameState &gs, int difficulty, int &row, int &col);
+
+void playConsoleGameVSPlayer();
+
+void playConsoleGameVSBot() ;
+
+void playConsoleBotVSBot();
+
