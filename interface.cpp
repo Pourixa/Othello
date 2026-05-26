@@ -627,7 +627,7 @@ void playLegalInterface(const gameState& gs , int legalID)
     putToken(!gs.currentPlayer,gs.legal.legals[legalID].row,gs.legal.legals[legalID].col,gs.n);
     turnTokens(!gs.currentPlayer,gs.legal.legals[legalID],gs.n);
 }
-void dessinPage(const UI &ui, gameState &game,int selectableZoneID)
+void dessinPage(const UI &ui, gameState &game,int selectableZoneID , bool &hasLegal)
 {
     const page& p = ui.pl[ui.pageID];
     if(selectableZoneID == -1 && ui.pageID != 4) {
@@ -780,7 +780,7 @@ void dessinPage(const UI &ui, gameState &game,int selectableZoneID)
                 showLegalMoves(game);
         }
     }
-    else if(ui.pageID == 4 && selectableZoneID == 1)
+    else if(ui.pageID == 4 && selectableZoneID == 1 && game.help)
     {
         showLegalMoves(game);
     }}
@@ -804,7 +804,16 @@ void dessinPage(const UI &ui, gameState &game,int selectableZoneID)
                     playLegalInterface(game,legalID);
                     selectableZoneID = 1;
                     calculateLegalMoves(game);
-                    showLegalMoves(game);
+                    if(game.legal.n > 0)
+                    {
+                        showLegalMoves(game);
+                        hasLegal = true;
+                    }
+                    else
+                    {
+                        hasLegal = false;
+                        game.currentPlayer = !game.currentPlayer;
+                    }
                 }
             }
             else {
@@ -825,18 +834,27 @@ void dessinPage(const UI &ui, gameState &game,int selectableZoneID)
                 }
             }
         }
-        else if(ui.pageID == 4 && selectableZoneID == 1 && game.currentPlayer == game.color)
+        else if(game.help && ui.pageID == 4 && selectableZoneID == 1 && game.currentPlayer == game.color)
         {
             showLegalMoves(game);
         }
-        else if (ui.pageID == 4 && selectableZoneID == 1 && game.bot)
+        else if (ui.pageID == 4 && selectableZoneID == 1 && game.bot || hasLegal == false)
         {
             botLogic(game,game.difficulty,row,col);
             playMove(game,row,col,legalID);
             playLegalInterface(game,legalID);
             selectableZoneID = 1;
             calculateLegalMoves(game);
-            showLegalMoves(game);
+            if(game.legal.n > 0)
+            {
+                showLegalMoves(game);
+                hasLegal = true;
+            }
+            else
+            {
+                hasLegal = false;
+                game.currentPlayer = !game.currentPlayer;
+            }
         }
     }
 }
