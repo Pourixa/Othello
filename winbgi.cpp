@@ -193,7 +193,7 @@ public :
 
 static char_queue kbd_queue;
 
-//rajouté : queue pour les evenements clics de souris
+//rajoutï¿½ : queue pour les evenements clics de souris
 
 class eventmouse_queue { 
 private :
@@ -1267,7 +1267,7 @@ int getch()
 	return kbd_queue.get();
 }
 
-//rajouté : attention, si on a appuye sur une touche,
+//rajoutï¿½ : attention, si on a appuye sur une touche,
 //le caractere correspondant n'est plus disponible
 //(utiliser kbhit sinon)
 
@@ -1283,13 +1283,13 @@ int keypressed()
 	}
 }
 
-//rajouté
+//rajoutï¿½
 void waituntilkeypressed()
 {
   getch();
 }
 
-//rajouté : gestion de la souris
+//rajoutï¿½ : gestion de la souris
 
 int buttonhit()
 {
@@ -1304,7 +1304,7 @@ void getmouse(int& x,int& y)
 	mouse_queue.get(x,y);
 }
 
-//rajouté : attention, si on a appuye sur une touche,
+//rajoutï¿½ : attention, si on a appuye sur une touche,
 //le caractere correspondant n'est plus disponible
 //(utiliser buttonhit sinon)
 

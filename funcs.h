@@ -14,7 +14,7 @@ bool checkCell(const gameState& gs,int row , int col ,int color);
 bool isEmptyCellLegalOneDirection(const gameState& gs ,legalMove& lm , const emptyCell& cell ,int rowDirection , int colDirection);
 bool isEmptyCellLegal(const gameState& gs ,legalMove& lm , const emptyCell& cell);
 void calculateLegalMoves(gameState& gs);
-bool verifyClick(const gameState& gs , int boardX1 ,int boardY1 , int boardX2 ,int boardY2 ,int xMouse , int yMouse , int& row ,int& col);
+bool verifyClick(const gameState& gs , int xMouse , int yMouse , int& row ,int& col);
 bool isClickLegal(const gameState& gs,int row , int col , int& id);
 void playLegal(gameState& gs,int id);
 void addEmptyCellOneDirection(gameState&gs ,int row , int col, int rowDirection , int colDirection);

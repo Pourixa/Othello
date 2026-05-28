@@ -151,37 +151,26 @@ void calculateLegalMoves(gameState& gs)
     }
 }
 
-bool verifyClick(const gameState& gs , int boardX1 ,int boardY1 , int boardX2 ,int boardY2 ,int xMouse , int yMouse , int& row ,int& col)
+bool verifyClick(const gameState& gs, int xMouse, int yMouse, int& row, int& col)
 {
-    if((xMouse>boardX1 && xMouse < boardX2) && (yMouse >boardY1 && yMouse<boardY2))
+    int taille_case = 80;
+    int largeur_plateau = gs.n * taille_case;
+
+    int x_debut = (1580 - largeur_plateau) / 2;
+    int y_debut = (920 - largeur_plateau) / 2;
+    int x_fin = x_debut + largeur_plateau;
+    int y_fin = y_debut + largeur_plateau;
+
+    if (xMouse >= x_debut && xMouse <= x_fin && yMouse >= y_debut && yMouse <= y_fin)
     {
-        int dx = (boardX2 - boardX1) / gs.n;
-        int dy = (boardY2 - boardY1) / gs.n;
+        col = (xMouse - x_debut) / taille_case;
+        row = (yMouse - y_debut) / taille_case;
 
-
-        int xLoc = xMouse - dx;
-        int xCount = 0;
-        while(xLoc > 0)
-        {
-            xLoc -=dx;
-            xCount++;
-        }
-
-        int yLoc = yMouse - dy;
-        int yCount = 0;
-        while(yLoc > 0)
-        {
-            yLoc -=dy;
-            yCount++;
-        }
-
-        row = yCount;
-        col = xCount - 1;
         return true;
     }
+
     return false;
 }
-
 bool isClickLegal(const gameState& gs,int row , int col , int& id)
 {
     int i = 0;
