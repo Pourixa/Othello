@@ -563,8 +563,8 @@ void mesPages(UI &ui)
     navP4.n = 2;
 
     // Bouton 1 : Réinitialiser (En haut à droite)
-    navP4.bs[0].b.x1 = 1250; navP4.bs[0].b.y1 = 150;
-    navP4.bs[0].b.x2 = 1550; navP4.bs[0].b.y2 = 250;
+    navP4.bs[0].b.x1 = 1150; navP4.bs[0].b.y1 = 150;
+    navP4.bs[0].b.x2 = 1500; navP4.bs[0].b.y2 = 250;
     navP4.bs[0].b.id = 401; // ID unique
     navP4.bs[0].b.t.t = (char*)"Reinitialiser";
     navP4.bs[0].b.t.font = DEFAULT_FONT;
@@ -572,8 +572,8 @@ void mesPages(UI &ui)
     navP4.bs[0].toPage = 4;
 
     // Bouton 2 : Accueil (En bas à droite)
-    navP4.bs[1].b.x1 = 1250; navP4.bs[1].b.y1 = 650;
-    navP4.bs[1].b.x2 = 1550; navP4.bs[1].b.y2 = 750;
+    navP4.bs[1].b.x1 = 1150; navP4.bs[1].b.y1 = 650;
+    navP4.bs[1].b.x2 = 1500; navP4.bs[1].b.y2 = 750;
     navP4.bs[1].b.id = 402; // ID unique
     navP4.bs[1].b.t.t = (char*)"Accueil";
     navP4.bs[1].b.t.font = DEFAULT_FONT;
@@ -718,7 +718,6 @@ void dessinPage(UI &ui, gameState &game, int selectableZoneID, bool &hasLegal)
     const page& p = ui.pl[ui.pageID];
 
     if(selectableZoneID == -1) {
-
         setbkcolor(BLACK);
         setfillstyle(SOLID_FILL, BLACK);
         setcolor(BLACK);
@@ -811,10 +810,8 @@ void dessinPage(UI &ui, gameState &game, int selectableZoneID, bool &hasLegal)
                 button(nb.b.x1, nb.b.y1, nb.b.x2, nb.b.y2, nb.b.t.font, nb.b.t.fontSize, nb.b.t.t);
             }
         }
-
     }
-    else
-    {
+    else {
         const selectableZone &sz = p.sl[selectableZoneID];
         for (int j = 0; j < sz.n; j++) {
             const selectableButton &sb = sz.bl[j];
@@ -838,13 +835,13 @@ void dessinPage(UI &ui, gameState &game, int selectableZoneID, bool &hasLegal)
             }
         }
     }
-    if (ui.pageID == 5)
-    {
+
+    if (ui.pageID == 5) {
         if (selectableZoneID == -1) {
             setbkcolor(BLACK);
             setfillstyle(SOLID_FILL, BLACK);
             bar(0, 0, 1580, 920);
-            box(450, 100, 1130, 850);
+            box(250, 100, 1330, 850);
         }
 
         setbkcolor(BOX_COLOR_MAIN);
@@ -852,7 +849,6 @@ void dessinPage(UI &ui, gameState &game, int selectableZoneID, bool &hasLegal)
         settextjustify(CENTER_TEXT, CENTER_TEXT);
 
         char textFinale[100];
-
         settextstyle(DEFAULT_FONT, HORIZ_DIR, 4);
         if (game.nbP[1] > game.nbP[0]) {
             outtextxy(1580 / 2, 200, (char*)"Les gagnants sont les blancs.");
@@ -869,19 +865,16 @@ void dessinPage(UI &ui, gameState &game, int selectableZoneID, bool &hasLegal)
         sprintf(textFinale, "Blanc : pions en sa possession %d.", game.nbP[1]);
         outtextxy(1580 / 2, 550, textFinale);
 
-        // Boutons Accueil et Recommencer
         for (int i = 0; i < p.nbNavigZones; i++) {
             for (int j = 0; j < p.nl[i].n; j++) {
                 button(p.nl[i].bs[j].b.x1, p.nl[i].bs[j].b.y1, p.nl[i].bs[j].b.x2, p.nl[i].bs[j].b.y2, p.nl[i].bs[j].b.t.font, p.nl[i].bs[j].b.t.fontSize, p.nl[i].bs[j].b.t.t);
             }
         }
-
         setcolor(WHITE);
         setbkcolor(BLACK);
+        initGame(game);
     }
-
-    else if (ui.pageID == 4)
-    {
+    else if (ui.pageID == 4) {
         int BOARD_X1, BOARD_Y1, BOARD_X2, BOARD_Y2;
         coordonneePlateau(game.n, BOARD_X1, BOARD_Y1, BOARD_X2, BOARD_Y2);
 
@@ -908,8 +901,8 @@ void dessinPage(UI &ui, gameState &game, int selectableZoneID, bool &hasLegal)
         if(game.bot) sprintf(scoreTexte, "Ordinateur : %d pions.", game.nbP[1]);
         else sprintf(scoreTexte, "Joueur 2 : %d pions.", game.nbP[1]);
         outtextxy(1580 / 2, 890, scoreTexte);
-
-        int box_x1 = 10, box_y1 = 420, box_x2 = 350, box_y2 = 580;
+        //message
+        int box_x1 = 10, box_y1 = 350, box_x2 = 450, box_y2 = 550;
         setcolor(WHITE);
         setfillstyle(SOLID_FILL, BOX_COLOR_MAIN);
         bar(box_x1, box_y1, box_x2, box_y2);
@@ -931,7 +924,7 @@ void dessinPage(UI &ui, gameState &game, int selectableZoneID, bool &hasLegal)
         setcolor(WHITE);
 
         if (popupActive != 0) {
-            int pop_x1 = 1220, pop_y1 = 350, pop_x2 = 1570, pop_y2 = 550;
+            int pop_x1 = 1150, pop_y1 = 350, pop_x2 = 1500, pop_y2 = 550;
             setcolor(WHITE);
             setfillstyle(SOLID_FILL, BOX_COLOR_MAIN);
             bar(pop_x1, pop_y1, pop_x2, pop_y2);
@@ -950,92 +943,18 @@ void dessinPage(UI &ui, gameState &game, int selectableZoneID, bool &hasLegal)
             setbkcolor(BLACK);
         }
 
-        if (popupActive == 0)
-        {
-            if (game.bot == false)
-            {
-                if (selectableZoneID == -1)
-                {
-                    if (game.posInit == 0) firstPositionBoard(BOARD_X1, BOARD_Y1, BOARD_X2, BOARD_Y2, game.n);
-                    else secondPositionBoard(BOARD_X1, BOARD_Y1, BOARD_X2, BOARD_Y2, game.n);
+        // Clean UI drawing context
+        if (popupActive == 0) {
+            if (selectableZoneID == -1) {
+                if (game.posInit == 0) firstPositionBoard(BOARD_X1, BOARD_Y1, BOARD_X2, BOARD_Y2, game.n);
+                else secondPositionBoard(BOARD_X1, BOARD_Y1, BOARD_X2, BOARD_Y2, game.n);
 
-                    if (game.help) showLegalMoves(game);
-                }
-                else if (selectableZoneID == 1 && game.help)
-                {
+                if (game.help && (!game.bot || game.currentPlayer == game.color)) {
                     showLegalMoves(game);
                 }
             }
-            else
-            {
-                int row, col, legalID;
-                if (selectableZoneID == -1)
-                {
-                    if (game.posInit == 0) firstPositionBoard(BOARD_X1, BOARD_Y1, BOARD_X2, BOARD_Y2, game.n);
-                    else secondPositionBoard(BOARD_X1, BOARD_Y1, BOARD_X2, BOARD_Y2, game.n);
-
-                    if (game.help && game.currentPlayer == game.color) {
-                        showLegalMoves(game);
-                    }
-                    else if (game.currentPlayer != game.color)
-                    {
-                        botLogic(game, game.difficulty, row, col);
-                        if (playMove(game, row, col, legalID)) {
-                            playLegalInterface(game, legalID);
-                            calculateLegalMoves(game);
-
-                            if (game.ec.n == 0) {
-                                    ui.pageID = 5;
-                            }
-                            else if (game.legal.n > 0) {
-                                showLegalMoves(game);
-                                hasLegal = true;
-                                strcpy(statutTexte, game.currentPlayer == 0 ? "Au tour des noirs." : "Au tour des blancs.");
-                                statutColor = YELLOW;
-                            } else {
-                                hasLegal = false;
-                                game.currentPlayer = !game.currentPlayer;
-                                calculateLegalMoves(game);
-                                if(game.legal.n == 0) ui.pageID = 5;
-                                else {
-                                    strcpy(statutTexte, game.currentPlayer == 1 ? "Tour impossible (Noirs)." : "Tour impossible (Blancs).");
-                                    statutColor = RED;
-                                }
-                            }
-                        }
-                    }
-                }
-                else if (game.help && selectableZoneID == 1 && game.currentPlayer == game.color)
-                {
-                    showLegalMoves(game);
-                }
-                else if ((selectableZoneID == 1 && game.currentPlayer != game.color) || hasLegal == false)
-                {
-                    botLogic(game, game.difficulty, row, col);
-                    if (playMove(game, row, col, legalID)) {
-                        playLegalInterface(game, legalID);
-                        calculateLegalMoves(game);
-
-                        if (game.ec.n == 0) {
-                                ui.pageID = 5;
-                        }
-                        else if (game.legal.n > 0) {
-                            showLegalMoves(game);
-                            hasLegal = true;
-                            strcpy(statutTexte, game.currentPlayer == 0 ? "Au tour des noirs." : "Au tour des blancs.");
-                            statutColor = YELLOW;
-                        } else {
-                            hasLegal = false;
-                            game.currentPlayer = !game.currentPlayer;
-                            calculateLegalMoves(game);
-                            if(game.legal.n == 0) ui.pageID = 5;
-                            else {
-                                strcpy(statutTexte, game.currentPlayer == 1 ? "Tour impossible (Noirs)." : "Tour impossible (Blancs).");
-                                statutColor = RED;
-                            }
-                        }
-                    }
-                }
+            else if ( game.help && (!game.bot || game.currentPlayer == game.color)) {
+                showLegalMoves(game);
             }
         }
     }
@@ -1043,6 +962,7 @@ void dessinPage(UI &ui, gameState &game, int selectableZoneID, bool &hasLegal)
 
 bool unCLic(UI &ui, int x, int y, gameState &game, int& ID) {
     page &p = ui.pl[ui.pageID];
+
     if(ui.pageID != 4) {
         for (int i = 0; i < p.nbNavigZones; i++) {
             const navigZone &nz = p.nl[i];
@@ -1050,17 +970,49 @@ bool unCLic(UI &ui, int x, int y, gameState &game, int& ID) {
                 const navigButton &nb = nz.bs[j];
                 if (x >= nb.b.x1 && x <= nb.b.x2 && y >= nb.b.y1 && y <= nb.b.y2) {
                     ui.pageID = nb.toPage;
-                    if(nb.b.id == 104)
-                    {
+                    if(nb.b.id == 104) {
                         game.bot = true;
-                        if(ui.pl[0].sl[0].bl[0].selected) game.color = 0;
-                        else game.color = 1;
+                        if(ui.pl[0].sl[0].bl[0].selected) game.color = 0; // Human is Black
+                        else game.color = 1;                             // Human is White
                     }
                     if (nb.toPage == 4) {
                         initGame(game);
                         calculateLegalMoves(game);
                         strcpy(statutTexte, "Les noirs commencent.");
                         statutColor = YELLOW;
+
+                        // BOT CASCADE ON START: If Bot is black (game.color == 1), it takes the first move immediately
+                        while (game.bot && game.currentPlayer != game.color && ui.pageID == 4) {
+                            int b_row, b_col, b_legalID;
+                            botLogic(game, game.difficulty, b_row, b_col);
+                            if (playMove(game, b_row, b_col, b_legalID)) {
+                                playLegalInterface(game, b_legalID);
+                                calculateLegalMoves(game);
+
+                                if (game.ec.n == 0 || isGameOver(game)) {
+                                    ui.pageID = 5;
+                                    ID = -1;
+                                    break;
+                                }
+                                if (game.legal.n == 0) {
+                                    game.currentPlayer = !game.currentPlayer; // Return turn to human
+                                    calculateLegalMoves(game);
+                                    if (game.legal.n == 0 || isGameOver(game)) {
+                                        ui.pageID = 5;
+                                        ID = -1;
+                                        break;
+                                    } else {
+                                        strcpy(statutTexte, game.currentPlayer == 1 ? "Tour impossible (Noirs)." : "Tour impossible (Blancs).");
+                                        statutColor = RED;
+                                    }
+                                } else {
+                                    strcpy(statutTexte, game.currentPlayer == 0 ? "Au tour des noirs." : "Au tour des blancs.");
+                                    statutColor = YELLOW;
+                                }
+                            } else {
+                                break;
+                            }
+                        }
                     }
                     ID = -1;
                     return true;
@@ -1085,14 +1037,10 @@ bool unCLic(UI &ui, int x, int y, gameState &game, int& ID) {
                         } else if (strcmp(sb.b.t.t, "4x4") == 0 || sb.b.id == 4) {
                             game.n = 4;
                         }
-                        if (sb.b.id == 301)
-                            game.posInit = 0;
-                        else if (sb.b.id == 302)
-                            game.posInit = 1;
-                        if (sb.b.id == 303)
-                            game.help = true;
-                        else if (sb.b.id == 304)
-                            game.help = false;
+                        if (sb.b.id == 301) game.posInit = 0;
+                        else if (sb.b.id == 302) game.posInit = 1;
+                        if (sb.b.id == 303) game.help = true;
+                        else if (sb.b.id == 304) game.help = false;
                     }
                     ID = i;
                     return true;
@@ -1100,17 +1048,48 @@ bool unCLic(UI &ui, int x, int y, gameState &game, int& ID) {
             }
         }
     }
-    else
-    {
+    else { // Gameplay Page 4
         if (popupActive != 0) {
             int pop_x1 = 1220, pop_y1 = 350, pop_x2 = 1570, pop_y2 = 550;
 
             if (x >= pop_x1 + 30 && x <= pop_x1 + 130 && y >= pop_y2 - 80 && y <= pop_y2 - 30) {
-                if (popupActive == 1) {
+                if (popupActive == 1) { // Resetting Match
                     initGame(game);
                     calculateLegalMoves(game);
                     strcpy(statutTexte, "Les noirs commencent.");
                     statutColor = YELLOW;
+
+                    // BOT CASCADE ON RESET
+                    while (game.bot && game.currentPlayer != game.color && ui.pageID == 4) {
+                        int b_row, b_col, b_legalID;
+                        botLogic(game, game.difficulty, b_row, b_col);
+                        if (playMove(game, b_row, b_col, b_legalID)) {
+                            playLegalInterface(game, b_legalID);
+                            calculateLegalMoves(game);
+                            if (game.ec.n == 0 || isGameOver(game)) {
+                                ui.pageID = 5;
+                                ID = -1;
+                                break;
+                            }
+                            if (game.legal.n == 0) {
+                                game.currentPlayer = !game.currentPlayer;
+                                calculateLegalMoves(game);
+                                if (game.legal.n == 0 || isGameOver(game)) {
+                                    ui.pageID = 5;
+                                    ID = -1;
+                                    break;
+                                } else {
+                                    strcpy(statutTexte, game.currentPlayer == 1 ? "Tour impossible (Noirs)." : "Tour impossible (Blancs).");
+                                    statutColor = RED;
+                                }
+                            } else {
+                                strcpy(statutTexte, game.currentPlayer == 0 ? "Au tour des noirs." : "Au tour des blancs.");
+                                statutColor = YELLOW;
+                            }
+                        } else {
+                            break;
+                        }
+                    }
                 }
                 else if (popupActive == 2) {
                     ui.pageID = 0;
@@ -1140,42 +1119,72 @@ bool unCLic(UI &ui, int x, int y, gameState &game, int& ID) {
         }
 
         int row, col, legalID;
-        if (verifyClick(game, x, y, row, col))
-        {
-            if (!game.bot || (game.bot && game.currentPlayer == game.color))
-            {
+        if (verifyClick(game, x, y, row, col)) {
+            // Human Turn Execution Block
+            if (!game.bot || (game.bot && game.currentPlayer == game.color)) {
                 if (playMove(game, row, col, legalID)) {
                     playLegalInterface(game, legalID);
-
-                    ID = 1;
                     calculateLegalMoves(game);
-                    if (isGameOver(game)) {
-                            ui.pageID = 5; }
 
-                    if (isGameOver(game)) {
+                    if (game.ec.n == 0 || isGameOver(game)) {
                         ui.pageID = 5;
                         ID = -1;
                         return true;
                     }
 
-                    if (game.legal.n == 0) {
-                        game.currentPlayer = !game.currentPlayer;
+                    if (game.legal.n == 0) { // Next player has no moves
+                        game.currentPlayer = !game.currentPlayer; // Pass back turn
                         calculateLegalMoves(game);
-                        game.isGameOver = isGameOver(game);
 
-                        if (game.isGameOver) {
-                            strcpy(statutTexte, "Partie terminee !");
-                            statutColor = YELLOW;
+                        if (game.legal.n == 0 || isGameOver(game)) {
                             ui.pageID = 5;
                             ID = -1;
                             return true;
                         } else {
+
                             strcpy(statutTexte, game.currentPlayer == 1 ? "Tour impossible pour les noirs." : "Tour impossible pour les blancs.");
                             statutColor = RED;
                         }
                     } else {
                         strcpy(statutTexte, game.currentPlayer == 0 ? "Au tour des noirs." : "Au tour des blancs.");
                         statutColor = YELLOW;
+                    }
+
+                    // BOT CASCADE ON SUCCESSFUL HUMAN MOVE
+                    while (game.bot && game.currentPlayer != game.color && ui.pageID == 4) {
+                        int b_row, b_col, b_legalID;
+                        botLogic(game, game.difficulty, b_row, b_col);
+                        if (playMove(game, b_row, b_col, b_legalID)) {
+                            playLegalInterface(game, b_legalID);
+                            calculateLegalMoves(game);
+
+                            if (game.ec.n == 0 || isGameOver(game)) {
+                                ui.pageID = 5;
+                                ID = -1;
+                                break;
+                            }
+
+                            if (game.legal.n == 0) { // Human has no moves, Bot retains turn!
+                                game.currentPlayer = !game.currentPlayer;
+                                calculateLegalMoves(game);
+
+                                if (game.legal.n == 0 || isGameOver(game)) {
+                                    ui.pageID = 5;
+                                    ID = -1;
+                                    break;
+                                } else {
+                                    strcpy(statutTexte, game.currentPlayer == 1 ? "Tour impossible pour les noirs." : "Tour impossible pour les blancs.");
+                                    statutColor = RED;
+                                    ID = 1;
+                                }
+                            } else {
+                                strcpy(statutTexte, game.currentPlayer == 0 ? "Au tour des noirs." : "Au tour des blancs.");
+                                statutColor = YELLOW;
+                                ID = 1;
+                            }
+                        } else {
+                            break;
+                        }
                     }
                     return true;
                 }
