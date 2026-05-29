@@ -55,8 +55,10 @@ int main() {
             }
         }
 
+
         delay(20);
     }
+
 
     closegraph();
     return 0;

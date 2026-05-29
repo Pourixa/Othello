@@ -909,7 +909,7 @@ void dessinPage(UI &ui, gameState &game, int selectableZoneID, bool &hasLegal)
         else sprintf(scoreTexte, "Joueur 2 : %d pions.", game.nbP[1]);
         outtextxy(1580 / 2, 890, scoreTexte);
 
-        int box_x1 = 50, box_y1 = 380, box_x2 = 350, box_y2 = 580;
+        int box_x1 = 10, box_y1 = 420, box_x2 = 350, box_y2 = 580;
         setcolor(WHITE);
         setfillstyle(SOLID_FILL, BOX_COLOR_MAIN);
         bar(box_x1, box_y1, box_x2, box_y2);
