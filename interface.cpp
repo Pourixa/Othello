@@ -1164,10 +1164,9 @@ bool unCLic(UI &ui, int x, int y, gameState &game, int &ID) {
                     return true;
                 } else {
                     strcpy(statutTexte, "Coup impossible.");
-                    strcpy(statutTexte, "Coup impossible.");
                     statutColor = RED;
                     ID = 1;
-                    return false;
+                    return true;
                 }
             }
         }
