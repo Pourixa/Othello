@@ -731,6 +731,13 @@ void dessinPage(UI &ui, gameState &game, int selectableZoneID, bool &hasLegal)
             box(60, 100, 1520, 860);
             firstPositionBoard(200, 180, 350, 330, 2);
             secondPositionBoard(800, 180, 950, 330, 2);
+            settextjustify(CENTER_TEXT, CENTER_TEXT);
+            setbkcolor(BOX_COLOR_MAIN);
+            setcolor(WHITE);
+            settextstyle(DEFAULT_FONT, HORIZ_DIR, 5);
+            outtextxy(200, 530, (char *) "8X8");
+            outtextxy(600, 530, (char *) "6X6");
+            outtextxy(1000, 530, (char *) "4X4");
         }
 
         for (int i = 0; i < p.nbTexts; i++) {
@@ -753,16 +760,6 @@ void dessinPage(UI &ui, gameState &game, int selectableZoneID, bool &hasLegal)
             }
 
             outtextxy(t.x, t.y, t.t);
-        }
-
-        if (ui.pageID == 3) {
-            settextjustify(CENTER_TEXT, CENTER_TEXT);
-            setbkcolor(BOX_COLOR_MAIN);
-            setcolor(WHITE);
-            settextstyle(DEFAULT_FONT, HORIZ_DIR, 5);
-            outtextxy(200, 530, (char *) "8X8");
-            outtextxy(600, 530, (char *) "6X6");
-            outtextxy(1000, 530, (char *) "4X4");
         }
 
         for (int i = 0; i < p.nbSelectableZones; i++) {
@@ -1020,7 +1017,7 @@ bool unCLic(UI &ui, int x, int y, gameState &game, int &ID) {
                         if (ui.pl[0].sl[0].bl[0].selected) game.color = 0; // Human is Black
                         else                                game.color = 1; // Human is White
                     }
-                    else if(nb.b.id == 501)
+                    else if(nb.b.id == 501 || nb.b.id == 305)
                     {
                         gameState newGame;
                         game = newGame;
@@ -1134,7 +1131,7 @@ bool unCLic(UI &ui, int x, int y, gameState &game, int &ID) {
                 if (playMove(game, row, col, legalID)) {
                     playLegalInterface(game, legalID);
                     calculateLegalMoves(game);
-
+                    ID = 1;
                     if (game.ec.n == 0 || isGameOver(game)) {
                         ui.pageID = 5;
                         ID = -1;
