@@ -1969,7 +1969,7 @@ void initgraphsize(int width,int height)
 	window_height=height;
     set_defaults();
 
-    hWnd = CreateWindow("BGIlibrary", "Windows BGI", 
+    hWnd = CreateWindow("BGIlibrary", "Othello",
 			WS_OVERLAPPEDWINDOW,
 		        0, 0, window_width+BORDER_WIDTH, 
 			window_height+BORDER_HEIGHT,
