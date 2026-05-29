@@ -564,7 +564,7 @@ void mesPages(UI &ui)
 
     // Bouton 1 : Réinitialiser (En haut à droite)
     navP4.bs[0].b.x1 = 1150; navP4.bs[0].b.y1 = 150;
-    navP4.bs[0].b.x2 = 1500; navP4.bs[0].b.y2 = 250;
+    navP4.bs[0].b.x2 = 1450; navP4.bs[0].b.y2 = 250;
     navP4.bs[0].b.id = 401; // ID unique
     navP4.bs[0].b.t.t = (char*)"Reinitialiser";
     navP4.bs[0].b.t.font = DEFAULT_FONT;
@@ -573,7 +573,7 @@ void mesPages(UI &ui)
 
     // Bouton 2 : Accueil (En bas à droite)
     navP4.bs[1].b.x1 = 1150; navP4.bs[1].b.y1 = 650;
-    navP4.bs[1].b.x2 = 1500; navP4.bs[1].b.y2 = 750;
+    navP4.bs[1].b.x2 = 1450; navP4.bs[1].b.y2 = 750;
     navP4.bs[1].b.id = 402; // ID unique
     navP4.bs[1].b.t.t = (char*)"Accueil";
     navP4.bs[1].b.t.font = DEFAULT_FONT;
@@ -895,12 +895,12 @@ void dessinPage(UI &ui, gameState &game, int selectableZoneID, bool &hasLegal)
 
         setcolor(game.currentPlayer == 0 ? CYAN : WHITE);
         sprintf(scoreTexte, "Joueur 1 : %d pions.", game.nbP[0]);
-        outtextxy(1580 / 2, 30, scoreTexte);
+        outtextxy(1580 / 2, 50, scoreTexte);
 
         setcolor(game.currentPlayer == 1 ? CYAN : WHITE);
         if(game.bot) sprintf(scoreTexte, "Ordinateur : %d pions.", game.nbP[1]);
         else sprintf(scoreTexte, "Joueur 2 : %d pions.", game.nbP[1]);
-        outtextxy(1580 / 2, 890, scoreTexte);
+        outtextxy(1580 / 2, 870, scoreTexte);
         //message
         int box_x1 = 10, box_y1 = 350, box_x2 = 450, box_y2 = 550;
         setcolor(WHITE);
