@@ -165,6 +165,7 @@ struct gameState {
     numberOfPions nbP; // 0 : black , 1 : white
     bool currentPlayer; // false : black , true: white
     bool isGameOver;
+    bool pendingBotMove;
 };
 
 #endif

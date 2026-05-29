@@ -24,7 +24,7 @@ void secondPositionBoard(int x1 ,int y1 , int x2 , int y2 ,int boardSize);
 void button(int x1 , int y1 , int x2 , int y2 ,int font ,int fontSize ,const char * text);
 
 void box(int x1 , int y1 , int x2 , int y2 );
-
+void runBotCascade(UI &ui, gameState &game, int &ID);
 void showLegalMoves(const gameState& gs);
 void playLegalInterface(const gameState&gs,int legalID);
 void mesPages(UI &ui);

@@ -1870,7 +1870,7 @@ void initgraph(int* device, int* mode, char const* /*pathtodriver*/)
     detect_mode(device, mode);
     set_defaults();
 
-    hWnd = CreateWindow("BGIlibrary", "Windows BGI", 
+    hWnd = CreateWindow("BGIlibrary", "Windows BGI",
 			WS_OVERLAPPEDWINDOW,
 		        0, 0, window_width+BORDER_WIDTH, 
 			window_height+BORDER_HEIGHT,
