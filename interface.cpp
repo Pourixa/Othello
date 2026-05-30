@@ -183,9 +183,9 @@ void mesPages(UI &ui)
     navigZone &zoneNav = p0.nl[0];
     zoneNav.n = 4;
 
-    zoneNav.bs[0].b.x1 = 1400;
+    zoneNav.bs[0].b.x1 = 1280;
     zoneNav.bs[0].b.y1 = 30;
-    zoneNav.bs[0].b.x2 = 1540;
+    zoneNav.bs[0].b.x2 = 1440;
     zoneNav.bs[0].b.y2 = 100;
     zoneNav.bs[0].b.id = 101;
     zoneNav.bs[0].b.t.t = (char*)"Regle";
@@ -193,10 +193,10 @@ void mesPages(UI &ui)
     zoneNav.bs[0].b.t.fontSize = 3;
     zoneNav.bs[0].toPage = 1;
 
-    zoneNav.bs[1].b.x1 = 1380;
-    zoneNav.bs[1].b.y1 = 820;
-    zoneNav.bs[1].b.x2 = 1540;
-    zoneNav.bs[1].b.y2 = 890;
+    zoneNav.bs[1].b.x1 = 1280;
+    zoneNav.bs[1].b.y1 = 780;
+    zoneNav.bs[1].b.x2 = 1440;
+    zoneNav.bs[1].b.y2 = 850;
     zoneNav.bs[1].b.id = 102;
     zoneNav.bs[1].b.t.t = (char*)"Sortie";
     zoneNav.bs[1].b.t.font = 0;
@@ -214,9 +214,9 @@ void mesPages(UI &ui)
     zoneNav.bs[2].toPage = 3;
 
     zoneNav.bs[3].b.x1 = 220;
-    zoneNav.bs[3].b.y1 = 790;
+    zoneNav.bs[3].b.y1 = 740;
     zoneNav.bs[3].b.x2 = 360;
-    zoneNav.bs[3].b.y2 = 870;
+    zoneNav.bs[3].b.y2 = 820;
     zoneNav.bs[3].b.id = 104;
     zoneNav.bs[3].b.t.t = (char*)"Jouer";
     zoneNav.bs[3].b.t.font = 0;
@@ -363,13 +363,13 @@ void mesPages(UI &ui)
 
     pageRegles.tl[17].x = 20;
     pageRegles.tl[17].y = 550;
-    pageRegles.tl[17].t = (char*)"La capture ne fonctionne que si les jetons adverses forment une ligne continue (sans case vide) entre le jeton pose et un";
+    pageRegles.tl[17].t = (char*)"La capture ne fonctionne que si les jetons adverses forment une ligne continue (sans case vide) entre le jeton pose et ";
     pageRegles.tl[17].font = 1;
     pageRegles.tl[17].fontSize = 1;
 
     pageRegles.tl[18].x = 20;
     pageRegles.tl[18].y = 570;
-    pageRegles.tl[18].t = (char*)"autre jeton de votre couleur deja present.";
+    pageRegles.tl[18].t = (char*)"un autre jeton de votre couleur deja present.";
     pageRegles.tl[18].font = 1;
     pageRegles.tl[18].fontSize = 1;
 
@@ -724,11 +724,11 @@ void dessinPage(UI &ui, gameState &game, int selectableZoneID, bool &hasLegal)
         bar(p.bgBox.x1, p.bgBox.y1, p.bgBox.x2, p.bgBox.y2);
 
         if (ui.pageID == 0) {
-            box(30, 30, 550, 890);
+            box(30, 30, 550, 850);
         }
 
         if (ui.pageID == 3) {
-            box(60, 100, 1520, 860);
+            box(60, 100, 1480, 860);
             firstPositionBoard(200, 180, 350, 330, 2);
             secondPositionBoard(800, 180, 950, 330, 2);
             settextjustify(CENTER_TEXT, CENTER_TEXT);
