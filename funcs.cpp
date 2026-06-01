@@ -344,7 +344,7 @@ int minimax(const gameState &gs, int level, int depth,int alpha ,int beta, int &
 }
 
 void botLogic(const gameState &gs, int difficulty, int &row, int &col) {
-    if (difficulty == 0) {
+    if (difficulty<= 0) {
         int i = rand() % gs.legal.n;
         row = gs.legal.legals[i].row;
         col = gs.legal.legals[i].col;
