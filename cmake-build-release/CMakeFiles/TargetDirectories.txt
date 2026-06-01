@@ -1,0 +1,3 @@
+C:/Programming/C++/UNI/Othello/cmake-build-release/CMakeFiles/Othello.dir
+C:/Programming/C++/UNI/Othello/cmake-build-release/CMakeFiles/edit_cache.dir
+C:/Programming/C++/UNI/Othello/cmake-build-release/CMakeFiles/rebuild_cache.dir
