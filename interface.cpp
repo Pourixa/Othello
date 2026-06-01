@@ -610,6 +610,21 @@ void mesPages(UI &ui)
     navP5.bs[1].toPage = 3; // Renvoie à la page 3 (Choix des paramètres)
 }
 
+void initChoices( UI& ui)
+{
+    for(int i = 0 ; i< ui.pl[3].nbSelectableZones;i++ )
+    {
+        selectableZone &tmp = ui.pl[3].sl[i];
+        for(int j = 0 ; j<tmp.n ;j++)
+        {
+            if(tmp.bl[j].b.id == 301 || tmp.bl[j].b.id == 8 || tmp.bl[j].b.id == 303)
+                tmp.bl[j].selected = true;
+            else
+                tmp.bl[j].selected = false;
+        }
+    }
+}
+
 void coordonneePlateau(int boardSize, int& x1, int& y1, int& x2, int& y2) {
     int taille_case = 80;
     int largeur_plateau = boardSize * taille_case;
@@ -870,6 +885,7 @@ void dessinPage(UI &ui, gameState &game, int selectableZoneID, bool &hasLegal)
         setcolor(WHITE);
         setbkcolor(BLACK);
         initGame(game);
+
     }
     else if (ui.pageID == 4) {
         int BOARD_X1, BOARD_Y1, BOARD_X2, BOARD_Y2;
@@ -1017,10 +1033,12 @@ bool unCLic(UI &ui, int x, int y, gameState &game, int &ID) {
                         if (ui.pl[0].sl[0].bl[0].selected) game.color = 0; // Human is Black
                         else                                game.color = 1; // Human is White
                     }
-                    else if(nb.b.id == 501 || nb.b.id == 305)
+                    else if(nb.b.id == 501 || nb.b.id == 305 || nb.b.id == 404)
                     {
                         gameState newGame;
                         game = newGame;
+                        initChoices(ui);
+                        ID = -1;
                     }
 
                     if (nb.toPage == 4) {
@@ -1087,6 +1105,8 @@ bool unCLic(UI &ui, int x, int y, gameState &game, int &ID) {
                     ui.pageID = 0;
                     gameState newGame;
                     game = newGame;
+                    initChoices(ui);
+                    ID = -1;
                 }
 
                 popupActive = 0;
