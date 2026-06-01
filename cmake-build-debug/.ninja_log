@@ -1,0 +1,6 @@
+# ninja log v5
+5	2008	8020116921238713	CMakeFiles/Othello.dir/main.cpp.obj	84af6b384e1898e
+25	442	8020374274431593	Othello.exe	4fc5e6722498f2c1
+9	840	8019963439163008	CMakeFiles/Othello.dir/funcs.cpp.obj	b22d672391cdb2c6
+16	2550	8020116926513309	CMakeFiles/Othello.dir/interface.cpp.obj	63f2888d59618cc8
+7	2839	8017942881911907	CMakeFiles/Othello.dir/winbgi.cpp.obj	f9791f3521e9f6ad
